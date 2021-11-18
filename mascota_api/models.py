@@ -43,6 +43,7 @@ class Mascota(models.Model):
     fecha_nacimiento = models.DateField(null=False)
     imagen = models.CharField(max_length=250)
     cliente = models.ForeignKey(Cliente, null=False)
+    estado = models.CharField(max_length=1, null=False)
 
     class Meta:
         db_table = 'mascota'
