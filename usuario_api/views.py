@@ -18,10 +18,10 @@ def authenticate(request):
         email = request.data['correo']
         user = Usuario.objects.get(correo=email)
         if user.estado == 'C':
-            passW = PasswordHasher().verify(user.clave, request.data['clave'])
-            if passW:
+            if PasswordHasher().verify(user.clave, request.data['clave']):
                 if HistorialMethods().ok(usuario=user.id, evento=5):
-                    return JsonResponse(user, safe=False)
+                    us = {"id": user.id, "email": user.correo, "rol": user.rol.id, "img": user.imagen}
+                    return JsonResponse(us, safe=False)
                 else:
                     return JsonResponse("User error", safe=False)
             else:
@@ -102,9 +102,9 @@ def putUser(request, id):
             usuario_data = JSONParser().parse(request)
             usuario = Usuario.objects.get(id=usuario_data['id'])
 
-            passW = PasswordHasher().verify(usuario.clave, usuario_data['clave'])
-            if not passW:
+            if usuario.clave != usuario_data['clave']:
                 usuario_data['clave'] = PasswordHasher().hash(usuario_data['clave'])
+
             usuario_data_serializer = UsuarioSerializer(usuario, data=usuario_data)
             if usuario_data_serializer.is_valid():
                 if HistorialMethods().ok(usuario=id, evento=2):
@@ -143,7 +143,7 @@ def getHistorial(request, id, user):
     try:
         us = Usuario.objects.get(id=user)
         if us.estado == 'C':
-            if us.rol >= 2:
+            if us.rol.id >= 2:
                 historial = Historial.objects.filter(usuario=id).filter(estado='C')
                 historial_serializer = HistorialSerializer(historial, many=True)
                 if HistorialMethods().ok(usuario=user, evento=4):

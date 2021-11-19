@@ -16,7 +16,7 @@ class TipoIdentificacion(models.Model):
 class IdentificacionCliente(models.Model):
     id = models.AutoField(primary_key=True)
     numero = models.CharField(max_length=250, null=False, unique=True)
-    tipo = models.ForeignKey(TipoIdentificacion, null=False)
+    tipo = models.ForeignKey(TipoIdentificacion, null=False, on_delete=models.CASCADE)
     estado = models.CharField(max_length=1, null=False)
 
     class Meta:
@@ -25,8 +25,8 @@ class IdentificacionCliente(models.Model):
 
 class Cliente(models.Model):
     id = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey(Usuario, null=False, unique=True)
-    identificacion = models.ForeignKey(IdentificacionCliente, null=False, unique=True)
+    usuario = models.OneToOneField(Usuario, null=False, on_delete=models.CASCADE)
+    identificacion = models.OneToOneField(IdentificacionCliente, null=False, on_delete=models.CASCADE)
     nombres = models.CharField(max_length=150, null=False)
     apellidos = models.CharField(max_length=150, null=False)
     telefono = models.CharField(max_length=20, null=False, unique=True)

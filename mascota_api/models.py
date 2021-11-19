@@ -36,13 +36,13 @@ class Especie(models.Model):
 class Mascota(models.Model):
     id = models.AutoField(primary_key=True)
     microchip = models.CharField(max_length=250, null=True)
-    raza = models.ForeignKey(Raza, null=False)
-    color = models.ForeignKey(Color, null=False)
+    raza = models.ForeignKey(Raza, null=False, on_delete=models.CASCADE)
+    color = models.ForeignKey(Color, null=False, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=250, null=False)
-    especie = models.ForeignKey(Especie, null=False)
+    especie = models.ForeignKey(Especie, null=False, on_delete=models.CASCADE)
     fecha_nacimiento = models.DateField(null=False)
-    imagen = models.CharField(max_length=250)
-    cliente = models.ForeignKey(Cliente, null=False)
+    imagen = models.CharField(max_length=250, null=True)
+    cliente = models.ForeignKey(Cliente, null=False, on_delete=models.CASCADE)
     estado = models.CharField(max_length=1, null=False)
 
     class Meta:
@@ -61,8 +61,8 @@ class Enfermedad(models.Model):
 
 class Padecimiento(models.Model):
     id = models.AutoField(primary_key=True)
-    mascota = models.ForeignKey(Mascota, null=False)
-    enfermedad = models.ForeignKey(Enfermedad, null=False)
+    mascota = models.ForeignKey(Mascota, null=False, on_delete=models.CASCADE)
+    enfermedad = models.ForeignKey(Enfermedad, null=False, on_delete=models.CASCADE)
     estado = models.CharField(max_length=1, null=False)
 
     class Meta:

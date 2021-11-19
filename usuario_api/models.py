@@ -21,7 +21,7 @@ class Usuario(models.Model):
     clave = models.CharField(max_length=254, null=False)
     imagen = models.CharField(max_length=250, null=True)
     estado = models.CharField(max_length=1, null=False)
-    rol = models.ForeignKey(Rol, null=False)
+    rol = models.ForeignKey(Rol, null=False, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'usuario'
@@ -38,8 +38,8 @@ class Evento(models.Model):
 
 class Historial(models.Model):
     id = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey(Usuario, null=False)
-    evento = models.ForeignKey(Evento, null=False)
+    usuario = models.ForeignKey(Usuario, null=False, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, null=False, on_delete=models.CASCADE)
     resultado = models.CharField(max_length=1, null=False)
     descripcion = models.CharField(max_length=250, null=True)
     fecha = models.DateField(null=False)

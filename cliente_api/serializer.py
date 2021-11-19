@@ -17,6 +17,7 @@ class TipoIdentificacionSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'nombre', 'descripcion', 'estado')
 
+
 class IdentificacionClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = IdentificacionCliente

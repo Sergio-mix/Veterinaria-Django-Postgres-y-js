@@ -172,10 +172,9 @@ def deleteIdentificacionCliente(request, id, user):
 @api_view(['GET'])
 def getCliente(request, id):
     try:
-        if Cliente.objects.get(id=id).estado == 'C':
-            cliente = Cliente.objects.filter(estado='C').all()
+        if Usuario.objects.get(id=id).estado == 'C':
+            cliente = Cliente.objects.filter(estado='C')
             cliente_serializer = ClienteSerializer(cliente, many=True)
-
             if HistorialMethods().ok(usuario=id, evento=8):
                 return JsonResponse(cliente_serializer.data, safe=False)
             else:
@@ -190,10 +189,9 @@ def getCliente(request, id):
 @api_view(['POST'])
 def postCliente(request, id):
     try:
-        if Cliente.objects.get(id=id).estado == 'C':
+        if Usuario.objects.get(id=id).estado == 'C':
             cliente_data = JSONParser().parse(request)
             cliente_data['estado'] = 'C'
-            cliente_data['clave'] = PasswordHasher().hash(cliente_data['clave'])
             cliente_serializer = ClienteSerializer(data=cliente_data)
             if cliente_serializer.is_valid():
                 if HistorialMethods().ok(usuario=id, evento=9):
@@ -212,13 +210,9 @@ def postCliente(request, id):
 @api_view(['PUT'])
 def putCliente(request, id):
     try:
-        if Cliente.objects.get(id=id).estado == 'C':
+        if Usuario.objects.get(id=id).estado == 'C':
             cliente_data = JSONParser().parse(request)
             cliente = Cliente.objects.get(id=cliente_data['id'])
-
-            passW = PasswordHasher().verify(cliente.clave, cliente_data['clave'])
-            if not passW:
-                cliente_data['clave'] = PasswordHasher().hash(cliente_data['clave'])
             cliente_data_serializer = ClienteSerializer(cliente, data=cliente_data)
             if cliente_data_serializer.is_valid():
                 if HistorialMethods().ok(usuario=id, evento=10):
@@ -226,6 +220,8 @@ def putCliente(request, id):
                     return JsonResponse("Updated Successfully", safe=False)
                 else:
                     return JsonResponse("Failed to Update")
+            else:
+                return JsonResponse("Failed to Update")
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
@@ -236,7 +232,7 @@ def putCliente(request, id):
 @api_view(['DELETE'])
 def deleteCliente(request, id, user):
     try:
-        if Cliente.objects.get(id=user).estado == 'C':
+        if Usuario.objects.get(id=user).estado == 'C':
             cl = Cliente.objects.get(id=id)
             cl.estado = 'D'
             if HistorialMethods().ok(usuario=user, evento=11):
