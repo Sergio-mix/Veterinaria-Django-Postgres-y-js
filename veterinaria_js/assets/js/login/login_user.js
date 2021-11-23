@@ -17,7 +17,7 @@ async function loginUser() {
                 case 1:
                     break;
                 case 2:
-
+                    doOpen('profileUserAdmin.html');
                     break;
                 case 3:
                     doOpen('profileUserBasic.html');
