@@ -157,7 +157,7 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0">
                             <h6>Pets</h6>
-                            <button class="btn btn-sm btn-neutral" onclick="openPet()">Add pet</button>
+                            <button class="btn btn-sm btn-neutral" onclick="openPetRegister()">Add pet</button>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -178,6 +178,9 @@
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                             Race
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Size
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                             Date of birth
@@ -247,7 +250,7 @@
     <div id="modal_container_pet" class="modal-container">
         <div class="modalform blur shadow-blur">
             <div class="row g-12">
-                <h3>Add Pet</h3>
+                <h3 id="titlePetModal"></h3>
             </div>
             <div class="row g-3">
                 <div class="col-md-6">
@@ -281,7 +284,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <button type="button" onclick="petForm()" class="btn btn-primary">Register</button>
+                    <button id="onClickPet" type="button" class="btn btn-primary"></button>
                     <button class="btn btn-outline-primary btn-sm " onclick="closePet()">Cerrar</button>
                 </div>
             </div>
@@ -303,7 +306,7 @@
                 </div>
                 <div class="col-12">
                     <button id="removePet" type="button" class="btn btn-primary">Remove</button>
-                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxtPetRemove()">Cerrar</button>
+                    <button class="btn btn-outline-primary btn-sm " onclick="closePetRemove()">Cerrar</button>
                 </div>
             </div>
         </div>

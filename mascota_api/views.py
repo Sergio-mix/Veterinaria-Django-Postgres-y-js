@@ -237,9 +237,16 @@ def deleteEspecie(request, id, user):
 def getMascota_user(request, id, user):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
-            mascota = Mascota.objects.filter(estado='C', usuario=user)
-            mascota_serializer = MascotaSerializer(mascota, many=True)
-            return JsonResponse(mascota_serializer.data, safe=False)
+            mascotas = Mascota.objects.filter(estado='C', usuario=user)
+            list = []
+            for mascota in mascotas:
+                list.append(
+                    {"id": mascota.id, "microchip": mascota.microchip, "raza": mascota.raza.nombre,
+                     "color": mascota.color.nombre,
+                     "nombre": mascota.nombre, "especie": mascota.especie.nombre, "tamanio": mascota.raza.tamanio,
+                     "fecha_nacimiento": mascota.nombre})
+
+            return JsonResponse(list, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:

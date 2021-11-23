@@ -57,7 +57,6 @@ async function userData() {
 }
 
 async function updateUser() {
-
     let names = document.getElementById('txtName').value;
     let lasName = document.getElementById('txtLastName').value;
     let telephone = document.getElementById('txtTelephone').value;
@@ -122,81 +121,149 @@ async function updateUser() {
     }
 }
 
-function openPet() {
-    // userData();
+function openPetRegister() {
+    document.getElementById('titlePetModal').innerText = 'Add pet';
     document.getElementById('modal_container_pet').classList.add('show');
+    race();
+    colors();
+    species();
+
+    document.getElementById('onClickPet').innerText = 'Register';
+
+    document.getElementById('onClickPet').onclick = async function () {
+        let pet = petForm();
+
+        if (pet !== null) {
+            let userData = await queryPT('POST', user_get, {"id": id}, false);
+            if (userData.status) {
+                let userLogin = await user_login({
+                    "correo": userData.correo,
+                    "clave": document.getElementById('txtPasswordPet').value
+                }, false);
+                if (userLogin.status) {
+                    let res = await queryPT('POST', save_pet + id, pet, false);
+
+                    if (res.status) {
+                        alert(res.message);
+                        closePet();
+                        llenarTabla();
+                    } else {
+                        alert(res.message);
+                    }
+                } else {
+                    alert(userLogin.message);
+                }
+            } else {
+                alert(userData.message);
+                location.reload();
+            }
+        }
+    }
 }
 
 function closePet() {
     document.getElementById('modal_container_pet').classList.remove('show');
-    // cleatTxtUser();
+    cleatTxtPet();
 }
 
-async function petForm() {
+function cleatTxtPet() {
+    document.getElementById('txtMicrochip').value = "";
+    document.getElementById('txtColour').innerText = "";
+    document.getElementById('txtSpecies').innerText = "";
+    document.getElementById('txtRace').innerText = "";
+    document.getElementById('txtNamePet').value = "";
+    document.getElementById('txtBirth_date').value = "";
+    document.getElementById('txtPasswordPet').value = "";
+}
+
+function petForm() {
     let microchip = document.getElementById('txtMicrochip').value;
     let color = document.getElementById('txtColour').value;
     let species = document.getElementById('txtSpecies').value;
+    let race = document.getElementById('txtRace').value;
     let name = document.getElementById('txtNamePet').value;
     let birth_date = document.getElementById('txtBirth_date').value;
     let passwordPet = document.getElementById('txtPasswordPet').value;
 
     if (name !== "" && birth_date !== "" && passwordPet !== "") {
-        let userData = await queryPT('POST', user_get, {"id": id}, false);
-        if (userData.status) {
-            let userLogin = await user_login({
-                "correo": userData.correo,
-                "clave": passwordPet
-            }, false);
-            if (userLogin.status) {
-
-                let user = {
-                    "id": id,
-                    "correo": userData.correo,
-                    "clave": password,
-                    "rol": userLogin.rol,
-                    "identificacion": userData.identificacion,
-                    "tipo": userData.tipo,
-                    "nombres": names,
-                    "apellidos": lasName,
-                    "telefono": telephone,
-                    "telefono_fijo": landLine,
-                    "direccion": address,
-                    "estado": 'C'
-                }
-
-                if (passwordNew !== "") {
-                    user.clave = passwordNew;
-                }
-
-                if (landLine === "") {
-                    user.telefono_fijo = null;
-                }
-
-
-                let userUpdate = await queryPT('PUT', update_user + id, user, false);
-
-                if (userUpdate.status) {
-                    data();
-                    alert(userUpdate.message);
-                    closeUse();
-                } else {
-                    alert(userUpdate.message);
-                }
-
-            } else {
-                alert(userLogin.message);
-            }
-        } else {
-            alert(userData.message);
-            location.reload();
+        let pet = {
+            "microchip": microchip,
+            "color": color,
+            "especie": species,
+            "nombre": name,
+            "fecha_nacimiento": birth_date,
+            "raza": race,
+            "usuario": id
         }
 
+        if (microchip === "") {
+            pet.microchip = null;
+        }
+
+        return pet;
     } else {
         alert('The values entered are not valid');
     }
 
+    return null;
 }
 
+function openPetUpdate(codigo) {
+    document.getElementById('titlePetModal').innerText = 'Update pet';
+    document.getElementById('modal_container_pet').classList.add('show');
+    race();
+    colors();
+    species();
+
+    document.getElementById('onClickPet').innerText = 'Update';
+
+    document.getElementById('onClickPet').onclick = async function () {
+
+        let res = await queryPT()
+
+    }
+}
+
+function openPetRemove(codigo, btn) {
+    document.getElementById('modal_container_pet_remove').classList.add('show');
+
+    document.getElementById('removePet').addEventListener('click', async function () {
+        let password = document.getElementById('txtPasswordPetRemove').value;
+
+        if (password !== "") {
+            let userData = await queryPT('POST', user_get, {"id": id}, false);
+            if (userData.status) {
+                let userLogin = await user_login({
+                    "correo": userData.correo,
+                    "clave": password
+                }, false);
+                if (userLogin.status) {
+                    let res = await queryGD('DELETE', remove__pet + codigo + '/' + id, false);
+
+                    if (res.status) {
+                        closePetRemove();
+                        let row = btn.parentNode.parentNode;
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert(res.message);
+                    }
+                } else {
+                    alert(userLogin.message);
+                }
+            } else {
+                alert(userData.message);
+                location.reload();
+            }
+        } else {
+            alert('The values entered are not valid');
+        }
+    })
+}
+
+function closePetRemove() {
+    document.getElementById('modal_container_pet_remove').classList.remove('show');
+    document.getElementById('txtPasswordPetRemove').value = "";
+}
 
 async function llenarTabla() {
     const request = await fetch(all_pet + id + '/' + id, {
@@ -220,16 +287,80 @@ async function llenarTabla() {
             "<td> " + pet.color + "</td>" +
             "<td> " + pet.especie + "</td>" +
             "<td> " + pet.raza + "</td>" +
+            "<td> " + pet.tamanio + "</td>" +
             "<td> " + pet.fecha_nacimiento + "</td>" +
             "<td>" +
-            // "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" onclick='actualizarMensaje(" + mensaje.idMessage + ")'>Actualizar</button>" +
+            "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" " +
+            "onclick='openPetUpdate(" + pet.id + ")'>Actualizar</button>" +
             "<button style=\"color: #dc4d5c\" class=\"btn btn-sm btn-neutral\" " +
-            // "onclick='eliminarMensaje(" + mensaje.idMessage + ",this" + ")'>" +
+            "onclick='openPetRemove(" + pet.id + ",this" + ")'>" +
             "Eliminar</button>" +
             "</td></tr>";
 
         listHtml += fila;
     }
 
-    document.querySelector('#dataTableMensaje tbody').outerHTML = listHtml;
+    document.querySelector('#table_pet tbody').outerHTML = listHtml;
+}
+
+async function colors() {
+    const request = await fetch(all_colors_pet + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        alert('Error');
+        location.reload();
+    });
+
+    const colors = await request.json();
+
+    for (let color of colors) {
+        document.getElementById('txtColour').innerHTML +=
+            "<option value='" + color.id + "'>" + color.nombre + "</option>";
+    }
+}
+
+async function race() {
+    const request = await fetch(all_race_pet + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        alert('Error');
+        location.reload();
+    });
+
+    const races = await request.json();
+
+    for (let race of races) {
+        document.getElementById('txtRace').innerHTML +=
+            "<option value='" + race.id + "'>" + race.nombre + "</option>";
+
+    }
+}
+
+async function species() {
+    const request = await fetch(all_species_pet + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        alert('Error');
+        location.reload();
+    });
+
+    const species = await request.json();
+
+    for (let specie of species) {
+        document.getElementById('txtSpecies').innerHTML +=
+            "<option value='" + specie.id + "'>" + specie.nombre + "</option>";
+
+    }
 }
