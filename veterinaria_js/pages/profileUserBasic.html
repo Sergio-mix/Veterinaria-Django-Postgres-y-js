@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>
+        Soft UI Dashboard by Creative Tim
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="../assets/css/nucleo-svg.css" rel="stylesheet"/>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="../assets/css/nucleo-svg.css" rel="stylesheet"/>
+    <!-- CSS Files -->
+    <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet"/>
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+<div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+
+    <div class="container-fluid">
+        <div class="page-header min-height-300 border-radius-xl mt-4"
+             style="background-image: url('../media/image/3.jpg'); background-position-y: 50%;">
+            <span class="mask bg-gradient-primary opacity-6"></span>
+        </div>
+        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden align-items-center">
+            <div class="row gx-12">
+                <div class="col-auto my-auto">
+                    <div class="h-100">
+                        <h3 id="name" class="mb-1">
+                        </h3>
+                        <p id="email" class="mb-0 font-weight-bold text-sm">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12 col-xl-4">
+                <div class="card h-100">
+                    <div class="card-header pb-0 p-3">
+                        <div class="row">
+                            <div class="col-md-8 d-flex align-items-center">
+                                <h6 class="mb-0">Profile Information</h6>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <a onclick="openUpdateUser()">
+                                    <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip"
+                                       data-bs-placement="top" title="Edit Profile"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong
+                                    class="text-dark">Name: </strong><strong id="nameP" class="text"></strong>
+                            </li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Last
+                                Name: </strong><strong id="lastnameP" class="text"></strong>
+                            </li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email: </strong><strong
+                                    id="emailP" class="text"></strong>
+                            </li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                    class="text-dark">Telephone: </strong><strong id="telephoneP"
+                                                                                  class="text"></strong>
+                            </li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                    class="text-dark">Landline: </strong><strong id="landlineP"
+                                                                                 class="text"></strong>
+                            </li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                    class="text-dark">Id: </strong><strong id="idP"
+                                                                           class="text"></strong>
+                            </li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                    class="text-dark">Address: </strong><strong id="addressP"
+                                                                                class="text"></strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <div class="card h-100">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Conversations</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                <div class="avatar me-3">
+                                    <img src="../assets/img/kal-visuals-square.jpg" alt="kal"
+                                         class="border-radius-lg shadow">
+                                </div>
+                                <div class="d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">Sophie B.</h6>
+                                    <p class="mb-0 text-xs">Hi! I need more information..</p>
+                                </div>
+                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                            </li>
+                            <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                <div class="avatar me-3">
+                                    <img src="../assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
+                                </div>
+                                <div class="d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">Anne Marie</h6>
+                                    <p class="mb-0 text-xs">Awesome work, can you..</p>
+                                </div>
+                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                            </li>
+                            <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                <div class="avatar me-3">
+                                    <img src="../assets/img/ivana-square.jpg" alt="kal" class="border-radius-lg shadow">
+                                </div>
+                                <div class="d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">Ivanna</h6>
+                                    <p class="mb-0 text-xs">About files I can..</p>
+                                </div>
+                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                            </li>
+                            <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                <div class="avatar me-3">
+                                    <img src="../assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
+                                </div>
+                                <div class="d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">Peterson</h6>
+                                    <p class="mb-0 text-xs">Have a great afternoon..</p>
+                                </div>
+                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                            </li>
+                            <li class="list-group-item border-0 d-flex align-items-center px-0">
+                                <div class="avatar me-3">
+                                    <img src="../assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
+                                </div>
+                                <div class="d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">Nick Daniel</h6>
+                                    <p class="mb-0 text-xs">Hi! I need more information..</p>
+                                </div>
+                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>Pets</h6>
+                            <button class="btn btn-sm btn-neutral" onclick="openAddPet()">Add pet</button>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table id="table_pet" class="table align-items-center mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Microchip
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Name
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Colour
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Species
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Race
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Date of birth
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            #
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---- modal profile user--->
+    <div id="modal_container_user" class="modal-container">
+        <div class="modalform blur shadow-blur">
+            <div class="row g-12">
+                <h3>Udate User</h3>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="txtName" class="form-label">Name</label>
+                    <input id="txtName" type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtLastName" class="form-label">LastName</label>
+                    <input type="text" class="form-control" id="txtLastName">
+                </div>
+                <div class="col-6">
+                    <label for="txtTelephone" class="form-label">Telephone</label>
+                    <input type="number" class="form-control" id="txtTelephone">
+                </div>
+                <div class="col-6">
+                    <label for="txtLandline" class="form-label">Landline</label>
+                    <input type="number" class="form-control" id="txtLandline">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="txtAddress">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtPasswordNew" class="form-label">password new</label>
+                    <input type="password" class="form-control" id="txtPasswordNew">
+                </div>
+                <div class="col-12">
+                    <div class="form-group label-floating">
+                        <label for="txtPassword" class="form-label">Current password</label>
+                        <input class="form-control" type="password" id="txtPassword">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="button" onclick="updateUser()" class="btn btn-primary">Update</button>
+                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxt()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---- modal add pet --->
+    <div id="modal_container_pet" class="modal-container">
+        <div class="modalform blur shadow-blur">
+            <div class="row g-12">
+                <h3>Add Pet</h3>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="txtMicrochip" class="form-label">Microchip</label>
+                    <input id="txtMicrochip" type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtRace" class="form-label">Race</label>
+                    <select class="form-control" type="text" id="txtRace"></select>
+                </div>
+                <div class="col-6">
+                    <label for="txtColour" class="form-label">Colour</label>
+                    <select class="form-control" type="text" id="txtColour"></select>
+                </div>
+                <div class="col-6">
+                    <label for="txtSpecies" class="form-label">Species</label>
+                    <select class="form-control" id="txtSpecies"></select>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtNamePet" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="txtNamePet">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtBirth_date" class="form-label">Birth date</label>
+                    <input type="date" class="form-control" id="txtBirth_date">
+                </div>
+                <div class="col-12">
+                    <div class="form-group label-floating">
+                        <label for="txtPasswordPet" class="form-label">Current password</label>
+                        <input class="form-control" type="password" id="txtPasswordPet">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="button" onclick="register_Pet()" class="btn btn-primary">Register</button>
+                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxtPet()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---- modal update pet --->
+    <div id="modal_container_update" class="modal-container">
+        <div class="modalform blur shadow-blur">
+            <div class="row g-12">
+                <h3>Update Pet</h3>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="txtMicrochipU" class="form-label">Microchip</label>
+                    <input id="txtMicrochipU" type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtRaceU" class="form-label">Race</label>
+                    <select class="form-control" type="text" id="txtRaceU"></select>
+                </div>
+                <div class="col-6">
+                    <label for="txtColourU" class="form-label">Colour</label>
+                    <select class="form-control" type="text" id="txtColourU"></select>
+                </div>
+                <div class="col-6">
+                    <label for="txtSpeciesU" class="form-label">Species</label>
+                    <select class="form-control" id="txtSpeciesU"></select>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtNamePetU" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="txtNamePetU">
+                </div>
+                <div class="col-md-6">
+                    <label for="txtBirth_dateU" class="form-label">Birth date</label>
+                    <input type="date" class="form-control" id="txtBirth_dateU">
+                </div>
+                <div class="col-12">
+                    <div class="form-group label-floating">
+                        <label for="txtPasswordPetU" class="form-label">Current password</label>
+                        <input class="form-control" type="password" id="txtPasswordPetU">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="button" onclick="register_Pet()" class="btn btn-primary">Update</button>
+                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxtPetUpdate()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---- modal remove pet--->
+    <div id="modal_container_pet_remove" class="modal-container">
+        <div class="modalform blur shadow-blur">
+            <div class="row g-12">
+                <h3>Remove Pet</h3>
+            </div>
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="form-group label-floating">
+                        <label for="txtPassword" class="form-label">Current password</label>
+                        <input class="form-control" type="password" id="txtPasswordPetRemove">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button id="removePet" type="button" class="btn btn-primary">Remove</button>
+                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxtPetRemove()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--   Core JS Files   -->
+<script src="../assets/js/manage.js"></script>
+<script src="../assets/js/user/user-basic.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+<script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+</body>
+
+</html>
