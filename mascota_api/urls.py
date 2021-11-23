@@ -23,13 +23,9 @@ urlpatterns = [
     path('api/mascota/update/<int:id>', views.putMascota),
     path('api/mascota/remove/<int:id>/<int:user>', views.deleteMacota),
 
-    path('api/enfermedad/all/<int:id>', views.getEnfermedad),
-    path('api/enfermedad/save/<int:id>', views.postEnfermedad),
-    path('api/enfermedad/update/<int:id>', views.putEnfermedad),
-    path('api/enfermedad/remove/<int:id>/<int:user>', views.deleteEnfermedad),
+    path('api/consulta/all/<int:id>', views.getConsulta),
+    path('api/consulta/save/<int:id>', views.postConsulta),
+    path('api/consulta/update/<int:id>', views.putConsulta),
+    path('api/consulta/remove/<int:id>/<int:user>', views.deleteConsulta),
 
-    path('api/padecimiento/all/<int:id>', views.getPadecimiento),
-    path('api/padecimiento/save/<int:id>', views.postPadecimiento),
-    path('api/padecimiento/update/<int:id>', views.putPadecimiento),
-    path('api/padecimiento/remove/<int:id>/<int:user>', views.deletePadecimiento),
 ]
