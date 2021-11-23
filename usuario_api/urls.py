@@ -2,8 +2,14 @@ from django.urls import path
 from usuario_api import views
 
 urlpatterns = [
+    path('api/tipo/all', views.getTipoIdentificacion),
+    path('api/tipo/save/<int:id>', views.postTipoIdentificacion),
+    path('api/tipo/update/<int:id>', views.putTipoIdentificacion),
+    path('api/tipo/remove/<int:id>/<int:user>', views.deleteTipoIdentificacion),
+
+    path('api/usuario/email', views.validate_Email),
     path('api/usuario/login', views.authenticate),
-    path('api/usuario/getuser/<int:user>', views.get_user),
+    path('api/usuario', views.get_user),
     path('api/rol/all', views.getRol),
     path('api/usuario/all/<int:id>', views.getUser),
     path('api/usuario/save', views.postUser),

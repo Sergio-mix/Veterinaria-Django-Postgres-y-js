@@ -7,47 +7,63 @@ from django.http.response import JsonResponse
 from usuario_api.methods import HistorialMethods
 from argon2 import PasswordHasher
 
-from usuario_api.models import Usuario, Historial, Rol
-from usuario_api.serializer import UsuarioSerializer, HistorialSerializer, RolSerializer
+from usuario_api.models import Usuario, Historial, Rol, TipoIdentificacion
+from usuario_api.serializer import UsuarioSerializer, HistorialSerializer, RolSerializer, TipoIdentificacionSerializer
 
 
 # Create your views here.
 @api_view(['POST'])
 def authenticate(request):
     try:
-        email = request.data['correo']
-        user = Usuario.objects.get(correo=email)
-        if user.estado == 'C':
-            if PasswordHasher().verify(user.clave, request.data['clave']):
-                if HistorialMethods().ok(usuario=user.id, evento=5):
-                    us = {"id": user.id, "email": user.correo, "rol": user.rol.id, "img": user.imagen}
-                    return JsonResponse(us, safe=False)
+        email = JSONParser().parse(request)
+        if Usuario.objects.filter(correo=email['correo']).exists():
+            user = Usuario.objects.get(correo=email['correo'])
+            if user.estado == 'C':
+                if PasswordHasher().verify(user.clave, email['clave']):
+                    if HistorialMethods().ok(usuario=user.id, evento="authenticate"):
+                        us = {"status": True, "id": user.id, "rol": user.rol.id}
+                        return JsonResponse(us, safe=False)
+                    else:
+                        return JsonResponse({"status": False, "message": "User error"}, safe=False)
                 else:
-                    return JsonResponse("User error", safe=False)
+                    return JsonResponse({"status": False, "message": "The key is wrong"}, safe=False)
             else:
-                return JsonResponse("Username does not exist", safe=False)
+                return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
-    except Usuario.DoesNotExist:
-        return JsonResponse("The user was not found", safe=False)
+            return JsonResponse({"status": False, "message": "User does not exist"}, safe=False)
+    except Exception as error:
+        return JsonResponse({"status": False, "message": "Authentication error"}, safe=False)
 
 
-@api_view(['GET'])
-def get_user(user):
+@api_view(['POST'])
+def validate_Email(request):
     try:
-        us = Usuario.objects.get(id=user)
-        if us.estado == 'C':
-            if us is not None:
-                if HistorialMethods().ok(usuario=user.id, evento=6):
-                    return JsonResponse(us, safe=False)
-                else:
-                    return JsonResponse("User error", safe=False)
-            else:
-                return JsonResponse("Username does not exist", safe=False)
+        if Usuario.objects.filter(correo=JSONParser().parse(request)['email']).exists():
+            return JsonResponse({"status": True}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
-    except Usuario.DoesNotExist:
-        return JsonResponse("The user was not found", safe=False)
+            return JsonResponse({"status": False}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
+def get_user(request):
+    re = JSONParser().parse(request)
+    try:
+        if Usuario.objects.filter(id=re['id']).exists():
+            us = Usuario.objects.get(id=re['id'])
+            if us.estado == 'C':
+                return JsonResponse(
+                    {"status": True, "nombres": us.nombres, "apellidos": us.apellidos, "telefono": us.telefono,
+                     "telefono_fijo": us.telefono_fijo, "direccion": us.direccion, "correo": us.correo,
+                     "identificacion": us.identificacion, "tipoNombre": us.tipo.nombre, "tipo": us.tipo.id}
+                    , safe=False)
+            else:
+                return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "Username does not exist"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
 
 
 # Rol
@@ -66,17 +82,12 @@ def getRol(request):
 def getUser(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
-            usuarios = Usuario.objects.filter(estado='C').all()
+            usuarios = Usuario.objects.filter(estado='C')
             usuarios_serializer = UsuarioSerializer(usuarios, many=True)
-
-            if HistorialMethods().ok(usuario=id, evento=1):
-                return JsonResponse(usuarios_serializer.data, safe=False)
-            else:
-                return JsonResponse("Failed to All", safe=False)
+            return JsonResponse(usuarios_serializer.data, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento=1, error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -84,14 +95,26 @@ def getUser(request, id):
 def postUser(request):
     try:
         usuario_data = JSONParser().parse(request)
-        usuario_data['estado'] = 'C'
-        usuario_data['clave'] = PasswordHasher().hash(usuario_data['clave'])
-        usuario_serializer = UsuarioSerializer(data=usuario_data)
-        if usuario_serializer.is_valid():
-            usuario_serializer.save()
-            return JsonResponse("Added Successfully", safe=False)
-        return JsonResponse("Failed to Add", safe=False)
+        if not Usuario.objects.filter(
+                identificacion=usuario_data['identificacion'],
+                tipo=usuario_data['tipo']).exists():
+
+            if usuario_data['rol'] is None:
+                usuario_data['rol'] = 3
+
+            usuario_data['estado'] = 'C'
+            usuario_data['clave'] = PasswordHasher().hash(usuario_data['clave'])
+            usuario_serializer = UsuarioSerializer(data=usuario_data)
+            if usuario_serializer.is_valid():
+                usuario_serializer.save()
+                return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
+            else:
+                return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "The identification is already registered"}, safe=False)
+
     except Exception as error:
+        print(error)
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -102,20 +125,21 @@ def putUser(request, id):
             usuario_data = JSONParser().parse(request)
             usuario = Usuario.objects.get(id=usuario_data['id'])
 
-            if usuario.clave != usuario_data['clave']:
-                usuario_data['clave'] = PasswordHasher().hash(usuario_data['clave'])
+            usuario_data['clave'] = PasswordHasher().hash(usuario_data['clave'])
 
             usuario_data_serializer = UsuarioSerializer(usuario, data=usuario_data)
             if usuario_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento=2):
+                if HistorialMethods().ok(usuario=id, evento="update"):
                     usuario_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Update")
+                    return JsonResponse({"status": False, "message": "Failed to Update"})
+            else:
+                return JsonResponse({"status": False, "message": "Data update could not be performed"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento=2, error=error.args[0])
+        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -125,7 +149,7 @@ def deleteUser(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             us = Usuario.objects.get(id=id)
             us.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento=3):
+            if HistorialMethods().ok(usuario=user, evento="remove"):
                 us.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
@@ -133,7 +157,77 @@ def deleteUser(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento=3, error=error.args[0])
+        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getTipoIdentificacion(request):
+    try:
+        tipo = TipoIdentificacion.objects.filter(estado='C')
+        tipo_serializer = TipoIdentificacionSerializer(tipo, many=True)
+        return JsonResponse(tipo_serializer.data, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
+def postTipoIdentificacion(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            tipo_data = JSONParser().parse(request)
+            tipo_data['estado'] = 'C'
+            tipo_serializer = TipoIdentificacionSerializer(data=tipo_data)
+            if tipo_serializer.is_valid():
+                if HistorialMethods().ok(usuario=id, evento="save"):
+                    tipo_serializer.save()
+                else:
+                    return JsonResponse("Failed to Save", safe=False)
+                return JsonResponse("Added Successfully", safe=False)
+            return JsonResponse("Failed to Add", safe=False)
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        HistorialMethods().error(usuario=id, evento="save", error=error.args[0])
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['PUT'])
+def putTipoIdentificacion(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            tipo_data = JSONParser().parse(request)
+            tipo = TipoIdentificacion.objects.get(id=tipo_data['id'])
+
+            tipo_data_serializer = TipoIdentificacionSerializer(tipo, data=tipo_data)
+            if tipo_data_serializer.is_valid():
+                if HistorialMethods().ok(usuario=id, evento="update"):
+                    tipo_data_serializer.save()
+                    return JsonResponse("Updated Successfully", safe=False)
+                else:
+                    return JsonResponse("Failed to Update")
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['DELETE'])
+def deleteTipoIdentificacion(request, id, user):
+    try:
+        if Usuario.objects.get(id=user).estado == 'C':
+            ti = TipoIdentificacion.objects.get(id=id)
+            ti.estado = 'D'
+            if HistorialMethods().ok(usuario=user, evento="remove"):
+                ti.save()
+                return JsonResponse("Deleted Successfully", safe=False)
+            else:
+                return JsonResponse("Failed to Deleted")
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -146,7 +240,7 @@ def getHistorial(request, id, user):
             if us.rol.id >= 2:
                 historial = Historial.objects.filter(usuario=id).filter(estado='C')
                 historial_serializer = HistorialSerializer(historial, many=True)
-                if HistorialMethods().ok(usuario=user, evento=4):
+                if HistorialMethods().ok(usuario=user, evento="history list"):
                     return JsonResponse(historial_serializer.data, safe=False)
                 else:
                     return JsonResponse("Failed to all")
@@ -155,5 +249,5 @@ def getHistorial(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento=4, error=error.args[0])
+        HistorialMethods().error(usuario=user, evento="history list", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND

@@ -18,8 +18,7 @@ class HistorialMethods:
                 "evento": evento,
                 "resultado": resultado,
                 "descripcion": descripcion,
-                "fecha": date.strftime("%Y-%m-%d"),
-                "hora": date.time().strftime("%H:%M:%S"),
+                "fecha": date.strftime("%Y-%m-%d %H:%M:%S"),
                 "estado": 'C'
             }
 

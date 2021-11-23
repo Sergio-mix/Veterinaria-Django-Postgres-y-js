@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mascota_api.models import Mascota, Raza, Color, Especie, Enfermedad, Padecimiento
+from mascota_api.models import Mascota, Raza, Color, Especie
 
 
 class MascotaSerializer(serializers.ModelSerializer):
@@ -7,8 +7,8 @@ class MascotaSerializer(serializers.ModelSerializer):
         model = Mascota
         fields = (
             'id', 'microchip', 'raza', 'color',
-            'nombre', 'especie', 'fecha_nacimiento', 'imagen',
-            'cliente', 'estado')
+            'nombre', 'especie', 'fecha_nacimiento',
+            'usuario', 'estado')
 
 
 class RazaSerializer(serializers.ModelSerializer):
@@ -32,15 +32,8 @@ class EspecieSerializer(serializers.ModelSerializer):
             'id', 'nombre', 'estado')
 
 
-class EnfermedadSerializer(serializers.ModelSerializer):
+class ConsultaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Enfermedad
+        model = Especie
         fields = (
-            'id', 'nombre', 'descripcion', 'estado')
-
-
-class PadecimientoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Padecimiento
-        fields = (
-            'id', 'mascota', 'enfermedad', 'estado')
+            'id', 'mascota', 'tipo', 'descripcion', 'estado')

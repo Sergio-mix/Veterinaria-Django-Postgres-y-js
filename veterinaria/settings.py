@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'usuario_api.apps.UsuarioApiConfig',
-    'cliente_api.apps.ClienteApiConfig',
     'mascota_api.apps.MascotaApiConfig'
 ]
 
