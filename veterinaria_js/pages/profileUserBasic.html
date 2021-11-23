@@ -157,7 +157,7 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0">
                             <h6>Pets</h6>
-                            <button class="btn btn-sm btn-neutral" onclick="openAddPet()">Add pet</button>
+                            <button class="btn btn-sm btn-neutral" onclick="openPet()">Add pet</button>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -281,57 +281,13 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <button type="button" onclick="register_Pet()" class="btn btn-primary">Register</button>
-                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxtPet()">Cerrar</button>
+                    <button type="button" onclick="petForm()" class="btn btn-primary">Register</button>
+                    <button class="btn btn-outline-primary btn-sm " onclick="closePet()">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!---- modal update pet --->
-    <div id="modal_container_update" class="modal-container">
-        <div class="modalform blur shadow-blur">
-            <div class="row g-12">
-                <h3>Update Pet</h3>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label for="txtMicrochipU" class="form-label">Microchip</label>
-                    <input id="txtMicrochipU" type="text" class="form-control">
-                </div>
-                <div class="col-md-6">
-                    <label for="txtRaceU" class="form-label">Race</label>
-                    <select class="form-control" type="text" id="txtRaceU"></select>
-                </div>
-                <div class="col-6">
-                    <label for="txtColourU" class="form-label">Colour</label>
-                    <select class="form-control" type="text" id="txtColourU"></select>
-                </div>
-                <div class="col-6">
-                    <label for="txtSpeciesU" class="form-label">Species</label>
-                    <select class="form-control" id="txtSpeciesU"></select>
-                </div>
-                <div class="col-md-6">
-                    <label for="txtNamePetU" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="txtNamePetU">
-                </div>
-                <div class="col-md-6">
-                    <label for="txtBirth_dateU" class="form-label">Birth date</label>
-                    <input type="date" class="form-control" id="txtBirth_dateU">
-                </div>
-                <div class="col-12">
-                    <div class="form-group label-floating">
-                        <label for="txtPasswordPetU" class="form-label">Current password</label>
-                        <input class="form-control" type="password" id="txtPasswordPetU">
-                    </div>
-                </div>
-                <div class="col-12">
-                    <button type="button" onclick="register_Pet()" class="btn btn-primary">Update</button>
-                    <button class="btn btn-outline-primary btn-sm " onclick="clearTxtPetUpdate()">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!---- modal remove pet--->
     <div id="modal_container_pet_remove" class="modal-container">
         <div class="modalform blur shadow-blur">
