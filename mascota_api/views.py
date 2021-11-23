@@ -244,13 +244,30 @@ def getMascota_user(request, id, user):
                     {"id": mascota.id, "microchip": mascota.microchip, "raza": mascota.raza.nombre,
                      "color": mascota.color.nombre,
                      "nombre": mascota.nombre, "especie": mascota.especie.nombre, "tamanio": mascota.raza.tamanio,
-                     "fecha_nacimiento": mascota.nombre})
+                     "fecha_nacimiento": mascota.fecha_nacimiento})
 
             return JsonResponse(list, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
         HistorialMethods().error(usuario=id, evento="list", error=error.args[0])
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
+def getMascotaById(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            pet = JSONParser().parse(request)
+            mascota = Mascota.objects.get(id=pet['id'])
+
+            return JsonResponse({"id": mascota.id, "microchip": mascota.microchip, "raza": mascota.raza.id,
+                                 "color": mascota.color.id, "nombre": mascota.nombre, "especie": mascota.especie.id,
+                                 "fecha_nacimiento": mascota.fecha_nacimiento}, safe=False)
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        print(error)
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -300,11 +317,11 @@ def putMascota(request, id):
             if mascota_data_serializer.is_valid():
                 if HistorialMethods().ok(usuario=id, evento="update"):
                     mascota_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Update")
+                    return JsonResponse({"status": False, "message": "Failed to Update"})
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND

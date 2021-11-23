@@ -1,4 +1,5 @@
 id = sessionStorage.getItem('id')
+email = sessionStorage.getItem('email')
 data();
 llenarTabla();
 
@@ -98,7 +99,6 @@ async function updateUser() {
                     user.telefono_fijo = null;
                 }
 
-
                 let userUpdate = await queryPT('PUT', update_user + id, user, false);
 
                 if (userUpdate.status) {
@@ -123,39 +123,33 @@ async function updateUser() {
 
 function openPetRegister() {
     document.getElementById('titlePetModal').innerText = 'Add pet';
+    document.getElementById('onClickPet').innerText = 'Register';
     document.getElementById('modal_container_pet').classList.add('show');
     race();
     colors();
     species();
 
-    document.getElementById('onClickPet').innerText = 'Register';
 
     document.getElementById('onClickPet').onclick = async function () {
         let pet = petForm();
 
         if (pet !== null) {
-            let userData = await queryPT('POST', user_get, {"id": id}, false);
-            if (userData.status) {
-                let userLogin = await user_login({
-                    "correo": userData.correo,
-                    "clave": document.getElementById('txtPasswordPet').value
-                }, false);
-                if (userLogin.status) {
-                    let res = await queryPT('POST', save_pet + id, pet, false);
+            let userLogin = await user_login({
+                "correo": email,
+                "clave": document.getElementById('txtPasswordPet').value
+            }, false);
+            if (userLogin.status) {
+                let res = await queryPT('POST', save_pet + id, pet, false);
 
-                    if (res.status) {
-                        alert(res.message);
-                        closePet();
-                        llenarTabla();
-                    } else {
-                        alert(res.message);
-                    }
+                if (res.status) {
+                    alert(res.message);
+                    closePet();
+                    llenarTabla();
                 } else {
-                    alert(userLogin.message);
+                    alert(res.message);
                 }
             } else {
-                alert(userData.message);
-                location.reload();
+                alert(userLogin.message);
             }
         }
     }
@@ -208,19 +202,57 @@ function petForm() {
     return null;
 }
 
-function openPetUpdate(codigo) {
+async function openPetUpdate(codigo) {
     document.getElementById('titlePetModal').innerText = 'Update pet';
+    document.getElementById('onClickPet').innerText = 'Update';
     document.getElementById('modal_container_pet').classList.add('show');
     race();
     colors();
     species();
 
-    document.getElementById('onClickPet').innerText = 'Update';
+    let res = await queryPT('POST', get_pet + id, {"id": codigo}, false);
+
+    document.getElementById('txtMicrochip').value = res.microchip;
+    document.getElementById('txtColour').value = res.color;
+    document.getElementById('txtSpecies').value = res.especie;
+    document.getElementById('txtRace').value = res.raza;
+    document.getElementById('txtNamePet').value = res.nombre;
+    document.getElementById('txtBirth_date').value = res.fecha_nacimiento;
 
     document.getElementById('onClickPet').onclick = async function () {
+        let pet = petForm();
 
-        let res = await queryPT()
+        if (pet !== null) {
 
+            const petObj = {
+                "id": codigo,
+                "estado": 'C',
+                "microchip": pet.microchip,
+                "color": pet.color,
+                "especie": pet.especie,
+                "nombre": pet.nombre,
+                "fecha_nacimiento": pet.fecha_nacimiento,
+                "raza": pet.raza,
+                "usuario": id
+            }
+
+            let userLogin = await user_login({
+                "correo": email,
+                "clave": document.getElementById('txtPasswordPet').value
+            }, false);
+            if (userLogin.status) {
+                let res = await queryPT('PUT', update__pet + id, petObj, false);
+                if (res.status) {
+                    alert(res.message);
+                    closePet();
+                    llenarTabla();
+                } else {
+                    alert(res.message);
+                }
+            } else {
+                alert(userLogin.message);
+            }
+        }
     }
 }
 
@@ -231,28 +263,22 @@ function openPetRemove(codigo, btn) {
         let password = document.getElementById('txtPasswordPetRemove').value;
 
         if (password !== "") {
-            let userData = await queryPT('POST', user_get, {"id": id}, false);
-            if (userData.status) {
-                let userLogin = await user_login({
-                    "correo": userData.correo,
-                    "clave": password
-                }, false);
-                if (userLogin.status) {
-                    let res = await queryGD('DELETE', remove__pet + codigo + '/' + id, false);
+            let userLogin = await user_login({
+                "correo": email,
+                "clave": password
+            }, false);
+            if (userLogin.status) {
+                let res = await queryGD('DELETE', remove__pet + codigo + '/' + id, false);
 
-                    if (res.status) {
-                        closePetRemove();
-                        let row = btn.parentNode.parentNode;
-                        row.parentNode.removeChild(row);
-                    } else {
-                        alert(res.message);
-                    }
+                if (res.status) {
+                    closePetRemove();
+                    let row = btn.parentNode.parentNode;
+                    row.parentNode.removeChild(row);
                 } else {
-                    alert(userLogin.message);
+                    alert(res.message);
                 }
             } else {
-                alert(userData.message);
-                location.reload();
+                alert(userLogin.message);
             }
         } else {
             alert('The values entered are not valid');
@@ -291,10 +317,10 @@ async function llenarTabla() {
             "<td> " + pet.fecha_nacimiento + "</td>" +
             "<td>" +
             "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" " +
-            "onclick='openPetUpdate(" + pet.id + ")'>Actualizar</button>" +
+            "onclick='openPetUpdate(" + pet.id + ")'>Update</button>" +
             "<button style=\"color: #dc4d5c\" class=\"btn btn-sm btn-neutral\" " +
             "onclick='openPetRemove(" + pet.id + ",this" + ")'>" +
-            "Eliminar</button>" +
+            "Remove</button>" +
             "</td></tr>";
 
         listHtml += fila;

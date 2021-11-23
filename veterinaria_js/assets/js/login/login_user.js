@@ -8,14 +8,16 @@ async function loginUser() {
             "correo": email,
             "clave": password
         }
-        let res = await user_login(user,false);
+        let res = await user_login(user, false);
 
         if (res.status) {
             sessionStorage.setItem("id", res.id);
+            sessionStorage.setItem("email", email);
             switch (res.rol) {
                 case 1:
                     break;
                 case 2:
+
                     break;
                 case 3:
                     doOpen('profileUserBasic.html');

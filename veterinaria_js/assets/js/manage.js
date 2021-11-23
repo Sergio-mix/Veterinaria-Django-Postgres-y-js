@@ -8,11 +8,13 @@ const user_get = API + 'api/usuario';
 const all_tipo_User = API + 'api/tipo/all';
 const update_user = API + 'api/usuario/update/';
 const all_pet = API + 'api/mascota/all/';
+const get_pet = API + 'api/mascota/byid/';
 const save_pet = API + 'api/mascota/save/';
 const all_colors_pet = API + 'api/color/all/';
 const all_race_pet = API + 'api/raza/all/';
 const all_species_pet = API + 'api/especie/all/';
 const remove__pet = API + 'api/mascota/remove/';
+const update__pet = API + 'api/mascota/update/';
 
 
 function user_login(user, error) {
