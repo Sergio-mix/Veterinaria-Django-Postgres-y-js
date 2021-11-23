@@ -4,7 +4,7 @@ document.getElementById('txtEmail').value = sessionStorage.getItem('email');
 
 async function register() {
     let nombres = document.getElementById('txtName').value;
-    let apellidos = document.getElementById('txtName').value;
+    let apellidos = document.getElementById('txtLastname').value;
     let identificacion = document.getElementById('txtId').value;
     let tipo = document.getElementById('txtType').option;
     let telefono = document.getElementById('txtTelephone').value;
@@ -29,7 +29,7 @@ async function register() {
             "direccion": address
         }
 
-        let res = await registerUser(user);
+        let res = await queryPT('POST', register_user, user, false);
 
         if (res) {
             alert(res.message);
@@ -40,24 +40,6 @@ async function register() {
     } else {
         alert('The values entered are not valid');
     }
-}
-
-function registerUser(user) {
-    return new Promise(resolve => {
-        return resolve(
-            fetch(register_user, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }, body: JSON.stringify(user)
-            }).then(res => res.json()).then(res => {
-                return res;
-            }).catch(err => {
-                alert('Process error');
-                location.reload();
-            })
-        );
-    });
 }
 
 async function tipoId() {

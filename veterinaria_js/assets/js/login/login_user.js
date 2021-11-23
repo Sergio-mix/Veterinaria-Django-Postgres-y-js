@@ -8,7 +8,7 @@ async function loginUser() {
             "correo": email,
             "clave": password
         }
-        let res = await user_login(user);
+        let res = await user_login(user,false);
 
         if (res.status) {
             sessionStorage.setItem("id", res.id);
@@ -29,20 +29,3 @@ async function loginUser() {
     }
 }
 
-function user_login(user) {
-    return new Promise(resolve => {
-        return resolve(
-            fetch(login, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }, body: JSON.stringify(user)
-            }).then(res => res.json()).then(res => {
-                return res;
-            }).catch(err => {
-                alert('Process error');
-                location.reload();
-            })
-        );
-    });
-}
