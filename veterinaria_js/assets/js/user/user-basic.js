@@ -102,9 +102,8 @@ async function updateUser() {
                 let userUpdate = await queryPT('PUT', update_user + id, user, false);
 
                 if (userUpdate.status) {
-                    data();
-                    alert(userUpdate.message);
                     closeUse();
+                    data();
                 } else {
                     alert(userUpdate.message);
                 }
@@ -142,7 +141,6 @@ function openPetRegister() {
                 let res = await queryPT('POST', save_pet + id, pet, false);
 
                 if (res.status) {
-                    alert(res.message);
                     closePet();
                     llenarTabla();
                 } else {
@@ -243,7 +241,6 @@ async function openPetUpdate(codigo) {
             if (userLogin.status) {
                 let res = await queryPT('PUT', update__pet + id, petObj, false);
                 if (res.status) {
-                    alert(res.message);
                     closePet();
                     llenarTabla();
                 } else {
