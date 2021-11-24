@@ -6,7 +6,7 @@ class MascotaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mascota
         fields = (
-            'id', 'microchip', 'raza', 'color',
+            'id', 'microchip', 'raza', 'color', 'sexo',
             'nombre', 'especie', 'fecha_nacimiento',
             'usuario', 'estado')
 
@@ -36,4 +36,4 @@ class ConsultaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Especie
         fields = (
-            'id', 'mascota', 'tipo', 'descripcion', 'estado')
+            'id', 'mascota', 'tipo', 'fecha', 'descripcion', 'estado')

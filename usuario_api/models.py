@@ -46,8 +46,6 @@ class Historial(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, null=False, on_delete=models.CASCADE)
     evento = models.CharField(max_length=50, null=False)
-    resultado = models.CharField(max_length=1, null=False)
-    descripcion = models.CharField(max_length=250, null=True)
     fecha = models.DateTimeField(null=False)
     estado = models.CharField(max_length=1, null=False)
 

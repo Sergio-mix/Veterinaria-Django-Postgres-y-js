@@ -35,7 +35,7 @@ def postRaza(request, id):
             raza_data['estado'] = 'C'
             raza_serializer = RazaSerializer(data=raza_data)
             if raza_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create"):
                     raza_serializer.save()
                 else:
                     return JsonResponse("Failed to Save", safe=False)
@@ -44,7 +44,6 @@ def postRaza(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="create", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -57,7 +56,7 @@ def putRaza(request, id):
 
             raza_data_serializer = RazaSerializer(raza, data=raza_data)
             if raza_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     raza_data_serializer.save()
                     return JsonResponse("Updated Successfully", safe=False)
                 else:
@@ -65,7 +64,6 @@ def putRaza(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -75,7 +73,7 @@ def deleteRaza(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             rz = Raza.objects.get(id=id)
             rz.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 rz.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
@@ -83,7 +81,6 @@ def deleteRaza(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -108,7 +105,7 @@ def postColor(request, id):
             color_data['estado'] = 'C'
             color_serializer = ColorSerializer(data=color_data)
             if color_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create"):
                     color_serializer.save()
                 else:
                     return JsonResponse("Failed to Save", safe=False)
@@ -117,7 +114,6 @@ def postColor(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="create", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -130,7 +126,7 @@ def putColor(request, id):
 
             color_data_serializer = ColorSerializer(color, data=color_data)
             if color_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     color_data_serializer.save()
                     return JsonResponse("Updated Successfully", safe=False)
                 else:
@@ -138,7 +134,6 @@ def putColor(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -148,7 +143,7 @@ def deleteColor(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             cl = Color.objects.get(id=id)
             cl.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 cl.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
@@ -156,7 +151,6 @@ def deleteColor(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -181,7 +175,7 @@ def postEspecie(request, id):
             especie_data['estado'] = 'C'
             especie_serializer = EspecieSerializer(data=especie_data)
             if especie_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create"):
                     especie_serializer.save()
                 else:
                     return JsonResponse("Failed to Save", safe=False)
@@ -190,7 +184,6 @@ def postEspecie(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="create", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -203,7 +196,7 @@ def putEspecie(request, id):
 
             especie_data_serializer = ColorSerializer(especie, data=especie_data)
             if especie_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     especie_data_serializer.save()
                     return JsonResponse("Updated Successfully", safe=False)
                 else:
@@ -211,7 +204,6 @@ def putEspecie(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -221,7 +213,7 @@ def deleteEspecie(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             ep = Especie.objects.get(id=id)
             ep.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 ep.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
@@ -229,7 +221,6 @@ def deleteEspecie(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -250,7 +241,6 @@ def getMascota_user(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="list", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -281,7 +271,6 @@ def getMascota(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="list", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -293,7 +282,7 @@ def postMascota(request, id):
             mascota_data['estado'] = 'C'
             mascota_serializer = MascotaSerializer(data=mascota_data)
             if mascota_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create"):
                     mascota_serializer.save()
                     return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
@@ -302,7 +291,6 @@ def postMascota(request, id):
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="create", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -315,7 +303,7 @@ def putMascota(request, id):
 
             mascota_data_serializer = MascotaSerializer(mascota, data=mascota_data)
             if mascota_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     mascota_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -323,7 +311,6 @@ def putMascota(request, id):
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -333,7 +320,7 @@ def deleteMacota(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             mc = Mascota.objects.get(id=id)
             mc.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 mc.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
@@ -341,7 +328,23 @@ def deleteMacota(request, id, user):
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getTipoConsulta(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            consulta = Consulta.objects.filter(estado='C')
+            consulta_serializer = ConsultaSerializer(consulta, many=True)
+
+            if HistorialMethods().create(usuario=id, evento="list"):
+                return JsonResponse(consulta_serializer.data, safe=False)
+            else:
+                return JsonResponse("Failed to All", safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -352,14 +355,13 @@ def getConsulta(request, id):
             consulta = Consulta.objects.filter(estado='C')
             consulta_serializer = ConsultaSerializer(consulta, many=True)
 
-            if HistorialMethods().ok(usuario=id, evento="list"):
+            if HistorialMethods().create(usuario=id, evento="list"):
                 return JsonResponse(consulta_serializer.data, safe=False)
             else:
                 return JsonResponse("Failed to All", safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="list", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -371,16 +373,15 @@ def postConsulta(request, id):
             consulta_data['estado'] = 'C'
             consulta_serializer = ConsultaSerializer(data=postConsulta)
             if consulta_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create"):
                     consulta_serializer.save()
                 else:
                     return JsonResponse("Failed to Save", safe=False)
                 return JsonResponse("Added Successfully", safe=False)
             return JsonResponse("Failed to Add", safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="create", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -392,15 +393,14 @@ def putConsulta(request, id):
             consulta = Consulta.objects.get(id=consulta_data['id'])
             consulta_data_serializer = ConsultaSerializer(consulta, data=consulta_data)
             if consulta_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     consulta_data_serializer.save()
                     return JsonResponse("Updated Successfully", safe=False)
                 else:
                     return JsonResponse("Failed to Update")
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -410,13 +410,12 @@ def deleteConsulta(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             ct = Consulta.objects.get(id=id)
             ct.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 ct.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
                 return JsonResponse("Failed to Deleted")
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND

@@ -20,7 +20,7 @@ def authenticate(request):
             user = Usuario.objects.get(correo=email['correo'])
             if user.estado == 'C':
                 if PasswordHasher().verify(user.clave, email['clave']):
-                    if HistorialMethods().ok(usuario=user.id, evento="authenticate"):
+                    if HistorialMethods().create(usuario=user.id, evento="authenticate"):
                         us = {"status": True, "id": user.id, "rol": user.rol.id}
                         return JsonResponse(us, safe=False)
                     else:
@@ -129,7 +129,7 @@ def putUser(request, id):
 
             usuario_data_serializer = UsuarioSerializer(usuario, data=usuario_data)
             if usuario_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     usuario_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -139,7 +139,6 @@ def putUser(request, id):
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -149,7 +148,7 @@ def deleteUser(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             us = Usuario.objects.get(id=id)
             us.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 us.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
@@ -157,7 +156,6 @@ def deleteUser(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -179,7 +177,7 @@ def postTipoIdentificacion(request, id):
             tipo_data['estado'] = 'C'
             tipo_serializer = TipoIdentificacionSerializer(data=tipo_data)
             if tipo_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="save"):
+                if HistorialMethods().create(usuario=id, evento="save"):
                     tipo_serializer.save()
                 else:
                     return JsonResponse("Failed to Save", safe=False)
@@ -188,7 +186,6 @@ def postTipoIdentificacion(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="save", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -201,7 +198,7 @@ def putTipoIdentificacion(request, id):
 
             tipo_data_serializer = TipoIdentificacionSerializer(tipo, data=tipo_data)
             if tipo_data_serializer.is_valid():
-                if HistorialMethods().ok(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update"):
                     tipo_data_serializer.save()
                     return JsonResponse("Updated Successfully", safe=False)
                 else:
@@ -209,7 +206,6 @@ def putTipoIdentificacion(request, id):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=id, evento="update", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -219,7 +215,7 @@ def deleteTipoIdentificacion(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             ti = TipoIdentificacion.objects.get(id=id)
             ti.estado = 'D'
-            if HistorialMethods().ok(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove"):
                 ti.save()
                 return JsonResponse("Deleted Successfully", safe=False)
             else:
@@ -227,7 +223,6 @@ def deleteTipoIdentificacion(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="remove", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -240,7 +235,7 @@ def getHistorial(request, id, user):
             if us.rol.id >= 2:
                 historial = Historial.objects.filter(usuario=id).filter(estado='C')
                 historial_serializer = HistorialSerializer(historial, many=True)
-                if HistorialMethods().ok(usuario=user, evento="history list"):
+                if HistorialMethods().create(usuario=user, evento="history list"):
                     return JsonResponse(historial_serializer.data, safe=False)
                 else:
                     return JsonResponse("Failed to all")
@@ -249,5 +244,4 @@ def getHistorial(request, id, user):
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
-        HistorialMethods().error(usuario=user, evento="history list", error=error.args[0])
         return http.HTTPStatus.NOT_FOUND

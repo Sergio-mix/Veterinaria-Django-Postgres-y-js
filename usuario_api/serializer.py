@@ -25,4 +25,4 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class HistorialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Historial
-        fields = ('id', 'usuario', 'evento', 'resultado', 'descripcion', 'fecha', 'estado')
+        fields = ('id', 'usuario', 'evento', 'fecha', 'estado')

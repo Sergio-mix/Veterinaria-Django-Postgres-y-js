@@ -4,20 +4,12 @@ from datetime import datetime
 
 class HistorialMethods:
 
-    def ok(self, usuario, evento):
-        return self.create(usuario, evento, None, 'O')
-
-    def error(self, usuario, evento, error):
-        return self.create(usuario, evento, error, 'E')
-
-    def create(self, usuario, evento, descripcion, resultado):
+    def create(self, usuario, evento):
         try:
             date = datetime.now()
             historial = {
                 "usuario": usuario,
                 "evento": evento,
-                "resultado": resultado,
-                "descripcion": descripcion,
                 "fecha": date.strftime("%Y-%m-%d %H:%M:%S"),
                 "estado": 'C'
             }
