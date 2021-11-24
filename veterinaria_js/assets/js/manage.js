@@ -4,6 +4,7 @@ const validate_Email = API + 'api/usuario/email';
 const login = API + 'api/usuario/login';
 const register_user = API + 'api/usuario/save';
 const user_get = API + 'api/usuario';
+const user_all = API + 'api/usuario/all/';
 
 const all_tipo_User = API + 'api/tipo/all';
 const update_user = API + 'api/usuario/update/';

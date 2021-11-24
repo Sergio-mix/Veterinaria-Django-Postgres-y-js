@@ -25,6 +25,10 @@ async function data() {
 function openUser() {
     userData();
     document.getElementById('modal_container_user').classList.add('show');
+
+    document.getElementById('removeModal').onclick = function () {
+
+    }
 }
 
 function closeUse() {
@@ -103,7 +107,7 @@ async function updateUser() {
 
                 if (userUpdate.status) {
                     closeUse();
-                    data();
+                    await data();
                 } else {
                     alert(userUpdate.message);
                 }
@@ -141,8 +145,8 @@ function openPetRegister() {
                 let res = await queryPT('POST', save_pet + id, pet, false);
 
                 if (res.status) {
+                    await llenarTabla();
                     closePet();
-                    llenarTabla();
                 } else {
                     alert(res.message);
                 }
@@ -166,6 +170,7 @@ function cleatTxtPet() {
     document.getElementById('txtNamePet').value = "";
     document.getElementById('txtBirth_date').value = "";
     document.getElementById('txtPasswordPet').value = "";
+    document.getElementById('txtSex').value = "M";
 }
 
 function petForm() {
@@ -174,6 +179,7 @@ function petForm() {
     let species = document.getElementById('txtSpecies').value;
     let race = document.getElementById('txtRace').value;
     let name = document.getElementById('txtNamePet').value;
+    let sex = document.getElementById('txtSex').value;
     let birth_date = document.getElementById('txtBirth_date').value;
     let passwordPet = document.getElementById('txtPasswordPet').value;
 
@@ -185,6 +191,7 @@ function petForm() {
             "nombre": name,
             "fecha_nacimiento": birth_date,
             "raza": race,
+            "sexo": sex,
             "usuario": id
         }
 
@@ -204,9 +211,9 @@ async function openPetUpdate(codigo) {
     document.getElementById('titlePetModal').innerText = 'Update pet';
     document.getElementById('onClickPet').innerText = 'Update';
     document.getElementById('modal_container_pet').classList.add('show');
-    race();
-    colors();
-    species();
+    await race();
+    await colors();
+    await species();
 
     let res = await queryPT('POST', get_pet + id, {"id": codigo}, false);
 
@@ -216,6 +223,7 @@ async function openPetUpdate(codigo) {
     document.getElementById('txtRace').value = res.raza;
     document.getElementById('txtNamePet').value = res.nombre;
     document.getElementById('txtBirth_date').value = res.fecha_nacimiento;
+    document.getElementById('txtSex').value = res.sexo;
 
     document.getElementById('onClickPet').onclick = async function () {
         let pet = petForm();
@@ -231,6 +239,7 @@ async function openPetUpdate(codigo) {
                 "nombre": pet.nombre,
                 "fecha_nacimiento": pet.fecha_nacimiento,
                 "raza": pet.raza,
+                "sexo": pet.sexo,
                 "usuario": id
             }
 
@@ -242,7 +251,7 @@ async function openPetUpdate(codigo) {
                 let res = await queryPT('PUT', update__pet + id, petObj, false);
                 if (res.status) {
                     closePet();
-                    llenarTabla();
+                    await llenarTabla();
                 } else {
                     alert(res.message);
                 }
@@ -304,14 +313,31 @@ async function llenarTabla() {
 
     let listHtml = '';
     for (let pet of pets) {
+        let sexo = '';
+
+        if (pet.sexo === 'M') {
+            sexo = 'Male'
+        } else {
+            sexo = 'Famale'
+        }
+
+        let microchip = '';
+
+        if (pet.microchip === null) {
+            microchip = 'undefined'
+        } else {
+            microchip = pet.microchip;
+        }
+
         let fila =
-            "<tr><td> " + pet.microchip + "</td>" +
+            "<tr><td> " + microchip + "</td>" +
             "<td> " + pet.nombre + "</td>" +
             "<td> " + pet.color + "</td>" +
             "<td> " + pet.especie + "</td>" +
             "<td> " + pet.raza + "</td>" +
             "<td> " + pet.tamanio + "</td>" +
             "<td> " + pet.fecha_nacimiento + "</td>" +
+            "<td> " + sexo + "</td>" +
             "<td>" +
             "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" " +
             "onclick='openPetUpdate(" + pet.id + ")'>Update</button>" +

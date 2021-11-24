@@ -6,7 +6,7 @@ async function register() {
     let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
     if (email !== "" && password !== "" && emailRegex.test(email)) {
-        let valEmail = await queryPT('POST', validate_Email, email, false);
+        let valEmail = await queryPT('POST', validate_Email, {"email":email}, false);
         if (!valEmail.status) {
             sessionStorage.setItem('email', email)
             sessionStorage.setItem('password', password);

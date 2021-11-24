@@ -235,7 +235,7 @@ def getMascota_user(request, id, user):
                     {"id": mascota.id, "microchip": mascota.microchip, "raza": mascota.raza.nombre,
                      "color": mascota.color.nombre,
                      "nombre": mascota.nombre, "especie": mascota.especie.nombre, "tamanio": mascota.raza.tamanio,
-                     "fecha_nacimiento": mascota.fecha_nacimiento})
+                     "fecha_nacimiento": mascota.fecha_nacimiento, "sexo": mascota.sexo})
 
             return JsonResponse(list, safe=False)
         else:
@@ -253,7 +253,7 @@ def getMascotaById(request, id):
 
             return JsonResponse({"id": mascota.id, "microchip": mascota.microchip, "raza": mascota.raza.id,
                                  "color": mascota.color.id, "nombre": mascota.nombre, "especie": mascota.especie.id,
-                                 "fecha_nacimiento": mascota.fecha_nacimiento}, safe=False)
+                                 "fecha_nacimiento": mascota.fecha_nacimiento, "sexo": mascota.sexo}, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
@@ -265,9 +265,16 @@ def getMascotaById(request, id):
 def getMascota(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
-            mascota = Mascota.objects.filter(estado='C')
-            mascota_serializer = MascotaSerializer(mascota, many=True)
-            return JsonResponse(mascota_serializer.data, safe=False)
+            mascotas = Mascota.objects.filter(estado='C')
+            list = []
+
+            for pet in mascotas:
+                list.append({"id": pet.id, "microchip": pet.microchip, "raza": pet.raza.nombre,
+                             "color": pet.color.nombre, "nombre": pet.nombre, "especie": pet.especie.nombre,
+                             "fecha_nacimiento": pet.fecha_nacimiento, "sexo": pet.sexo,
+                             "tamanio": pet.raza.tamanio})
+
+            return JsonResponse(list, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:

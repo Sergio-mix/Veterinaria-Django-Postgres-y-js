@@ -52,7 +52,7 @@ class Consulta(models.Model):
     id = models.AutoField(primary_key=True)
     mascota = models.ForeignKey(Mascota, null=False, on_delete=models.CASCADE)
     peso = models.IntegerField(null=True)
-    tipo = models.CharField(max_length=80, null=False, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=80, null=False)
     fecha = models.DateField(null=False)
     descripcion = models.CharField(max_length=250, null=True)
     estado = models.CharField(max_length=1, null=False)

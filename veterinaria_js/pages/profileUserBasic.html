@@ -186,6 +186,9 @@
                                             Date of birth
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Sex
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                             #
                                         </th>
                                     </tr>
@@ -246,13 +249,13 @@
         </div>
     </div>
 
-    <!---- modal add pet --->
+    <!---- modal pet --->
     <div id="modal_container_pet" class="modal-container">
         <div class="modalform blur shadow-blur">
             <div class="row g-12">
                 <h3 id="titlePetModal"></h3>
             </div>
-            <div class="row g-3">
+            <div class="row g-3 modal-dialog-scrollable navbar-nav-scroll">
                 <div class="col-md-6">
                     <label for="txtMicrochip" class="form-label">Microchip</label>
                     <input id="txtMicrochip" type="text" class="form-control">
@@ -270,6 +273,13 @@
                     <select class="form-control" id="txtSpecies"></select>
                 </div>
                 <div class="col-md-6">
+                    <label for="txtBirth_date" class="form-label">Sex</label>
+                    <label for="txtSex"></label><select class="form-control" id="txtSex">
+                        <option value="M">Male</option>
+                        <option value="H">female</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
                     <label for="txtNamePet" class="form-label">Name</label>
                     <input type="text" class="form-control" id="txtNamePet">
                 </div>
@@ -283,10 +293,10 @@
                         <input class="form-control" type="password" id="txtPasswordPet">
                     </div>
                 </div>
-                <div class="col-12">
-                    <button id="onClickPet" type="button" class="btn btn-primary"></button>
-                    <button class="btn btn-outline-primary btn-sm " onclick="closePet()">Close</button>
-                </div>
+            </div>
+            <div class="col-12">
+                <button id="onClickPet" type="button" class="btn btn-primary"></button>
+                <button class="btn btn-outline-primary btn-sm " onclick="closePet()">Close</button>
             </div>
         </div>
     </div>
@@ -300,7 +310,7 @@
             <div class="row g-3">
                 <div class="col-12">
                     <div class="form-group label-floating">
-                        <label for="txtPassword" class="form-label">Current password</label>
+                        <label for="txtPasswordPetRemove" class="form-label">Current password</label>
                         <input class="form-control" type="password" id="txtPasswordPetRemove">
                     </div>
                 </div>
@@ -312,7 +322,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!--   Core JS Files   -->
