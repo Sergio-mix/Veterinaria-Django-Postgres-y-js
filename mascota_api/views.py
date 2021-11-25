@@ -98,6 +98,32 @@ def getColor(request, id):
 
 
 @api_view(['POST'])
+def getColorByid(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            color = Color.objects.get(id=JSONParser().parse(request)["id"])
+            return JsonResponse({"nombre": color.nombre}, safe=False)
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        print(error)
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getColor(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            color = Color.objects.filter(estado='C')
+            color_serializer = ColorSerializer(color, many=True)
+            return JsonResponse(color_serializer.data, safe=False)
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
 def postColor(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
@@ -107,13 +133,14 @@ def postColor(request, id):
             if color_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="create"):
                     color_serializer.save()
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Save", safe=False)
-                return JsonResponse("Added Successfully", safe=False)
-            return JsonResponse("Failed to Add", safe=False)
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
+            return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
+        print(error)
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -128,11 +155,11 @@ def putColor(request, id):
             if color_data_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="update"):
                     color_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Update")
+                    return JsonResponse({"status": True, "message": "Failed to Update"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": True, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -145,11 +172,11 @@ def deleteColor(request, id, user):
             cl.estado = 'D'
             if HistorialMethods().create(usuario=user, evento="remove"):
                 cl.save()
-                return JsonResponse("Deleted Successfully", safe=False)
+                return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
-                return JsonResponse("Failed to Deleted")
+                return JsonResponse({"status": False, "message": "Failed to Deleted"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 

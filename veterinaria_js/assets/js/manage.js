@@ -5,6 +5,7 @@ const login = API + 'api/usuario/login';
 const register_user = API + 'api/usuario/save';
 const user_get = API + 'api/usuario';
 const user_all = API + 'api/usuario/all/';
+const typeDocument_all = API + 'api/tipo/all';
 
 const all_tipo_User = API + 'api/tipo/all';
 const update_user = API + 'api/usuario/update/';
@@ -16,6 +17,13 @@ const all_race_pet = API + 'api/raza/all/';
 const all_species_pet = API + 'api/especie/all/';
 const remove__pet = API + 'api/mascota/remove/';
 const update__pet = API + 'api/mascota/update/';
+
+const register_color = API + 'api/color/save/';
+const remove_color = API + 'api/color/remove/';
+const getByid = API + 'api/color/byid/';
+const updatePet = API + 'api/color/update/';
+
+const all_query = API + 'api/consulta/all/';
 
 
 function user_login(user, error) {
@@ -30,7 +38,6 @@ function user_login(user, error) {
                 return res;
             }).catch(err => {
                 alert('Process error');
-
                 if (error) {
                     doOpen('sign-in.html');
                 } else {
@@ -54,7 +61,6 @@ function queryPT(type, url, object, error) {
                 return res;
             }).catch(err => {
                 alert('Process error');
-
                 if (error) {
                     doOpen('sign-in.html');
                 } else {

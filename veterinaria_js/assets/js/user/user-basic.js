@@ -111,7 +111,6 @@ async function updateUser() {
                 } else {
                     alert(userUpdate.message);
                 }
-
             } else {
                 alert(userLogin.message);
             }
