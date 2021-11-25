@@ -304,7 +304,6 @@ async function llenarTabla() {
             'Content-Type': 'application/json'
         }
     }).catch(err => {
-        alert('Process error');
         location.reload();
     })
 
@@ -359,7 +358,6 @@ async function colors() {
             'Content-Type': 'application/json'
         }
     }).catch(err => {
-        alert('Error');
         location.reload();
     });
 
@@ -379,7 +377,6 @@ async function race() {
             'Content-Type': 'application/json'
         }
     }).catch(err => {
-        alert('Error');
         location.reload();
     });
 
@@ -388,7 +385,6 @@ async function race() {
     for (let race of races) {
         document.getElementById('txtRace').innerHTML +=
             "<option value='" + race.id + "'>" + race.nombre + "</option>";
-
     }
 }
 
@@ -400,7 +396,6 @@ async function species() {
             'Content-Type': 'application/json'
         }
     }).catch(err => {
-        alert('Error');
         location.reload();
     });
 

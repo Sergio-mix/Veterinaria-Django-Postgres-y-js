@@ -14,6 +14,18 @@ from usuario_api.models import Usuario
 
 # Create your views here.
 
+@api_view(['POST'])
+def getRazaByid(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            raza = Raza.objects.get(id=JSONParser().parse(request)["id"])
+            return JsonResponse({"status": True, "nombre": raza.nombre, "tamanio": raza.tamanio}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
 @api_view(['GET'])
 def getRaza(request, id):
     try:
@@ -37,12 +49,12 @@ def postRaza(request, id):
             if raza_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="create"):
                     raza_serializer.save()
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Save", safe=False)
-                return JsonResponse("Added Successfully", safe=False)
-            return JsonResponse("Failed to Add", safe=False)
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
+            return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -75,11 +87,11 @@ def deleteRaza(request, id, user):
             rz.estado = 'D'
             if HistorialMethods().create(usuario=user, evento="remove"):
                 rz.save()
-                return JsonResponse("Deleted Successfully", safe=False)
+                return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
-                return JsonResponse("Failed to Deleted")
+                return JsonResponse({"status": False, "message": "Failed to Deleted"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -102,9 +114,9 @@ def getColorByid(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
             color = Color.objects.get(id=JSONParser().parse(request)["id"])
-            return JsonResponse({"nombre": color.nombre}, safe=False)
+            return JsonResponse({"status": True, "nombre": color.nombre}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         print(error)
         return http.HTTPStatus.NOT_FOUND

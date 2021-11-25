@@ -2,10 +2,11 @@ from django.urls import path
 from mascota_api import views
 
 urlpatterns = [
+    path('api/raza/byid/<int:id>', views.getRazaByid),
     path('api/raza/all/<int:id>', views.getRaza),
     path('api/raza/save/<int:id>', views.postRaza),
     path('api/raza/update/<int:id>', views.putRaza),
-    path('api/tipo/raza/remove/<int:id>/<int:user>', views.deleteRaza),
+    path('api/raza/remove/<int:id>/<int:user>', views.deleteRaza),
 
     path('api/color/byid/<int:id>', views.getColorByid),
     path('api/color/all/<int:id>', views.getColor),

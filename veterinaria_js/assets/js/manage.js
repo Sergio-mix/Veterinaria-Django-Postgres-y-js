@@ -12,16 +12,23 @@ const update_user = API + 'api/usuario/update/';
 const all_pet = API + 'api/mascota/all/';
 const get_pet = API + 'api/mascota/byid/';
 const save_pet = API + 'api/mascota/save/';
-const all_colors_pet = API + 'api/color/all/';
-const all_race_pet = API + 'api/raza/all/';
+
+
 const all_species_pet = API + 'api/especie/all/';
 const remove__pet = API + 'api/mascota/remove/';
 const update__pet = API + 'api/mascota/update/';
 
+const all_colors_pet = API + 'api/color/all/';
 const register_color = API + 'api/color/save/';
 const remove_color = API + 'api/color/remove/';
-const getByid = API + 'api/color/byid/';
-const updatePet = API + 'api/color/update/';
+const getByid_color = API + 'api/color/byid/';
+const update_Color = API + 'api/color/update/';
+
+const all_race_pet = API + 'api/raza/all/';
+const getByid_race = API + 'api/raza/byid/';
+const register_Race = API +'api/raza/save/';
+const remove_Race = API + 'api/raza/remove/';
+const update_Race = API + 'api/raza/update/';
 
 const all_query = API + 'api/consulta/all/';
 
@@ -37,7 +44,6 @@ function user_login(user, error) {
             }).then(res => res.json()).then(res => {
                 return res;
             }).catch(err => {
-                alert('Process error');
                 if (error) {
                     doOpen('sign-in.html');
                 } else {
@@ -60,7 +66,6 @@ function queryPT(type, url, object, error) {
             }).then(res => res.json()).then(res => {
                 return res;
             }).catch(err => {
-                alert('Process error');
                 if (error) {
                     doOpen('sign-in.html');
                 } else {
@@ -82,7 +87,6 @@ function queryGD(type, url, error) {
             }).then(res => res.json()).then(res => {
                 return res;
             }).catch(err => {
-                alert('Process error');
 
                 if (error) {
                     doOpen('sign-in.html');
