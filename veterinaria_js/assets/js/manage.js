@@ -13,8 +13,6 @@ const all_pet = API + 'api/mascota/all/';
 const get_pet = API + 'api/mascota/byid/';
 const save_pet = API + 'api/mascota/save/';
 
-
-const all_species_pet = API + 'api/especie/all/';
 const remove__pet = API + 'api/mascota/remove/';
 const update__pet = API + 'api/mascota/update/';
 
@@ -26,9 +24,12 @@ const update_Color = API + 'api/color/update/';
 
 const all_race_pet = API + 'api/raza/all/';
 const getByid_race = API + 'api/raza/byid/';
-const register_Race = API +'api/raza/save/';
+const register_Race = API + 'api/raza/save/';
 const remove_Race = API + 'api/raza/remove/';
 const update_Race = API + 'api/raza/update/';
+
+const all_species_pet = API + 'api/especie/all/';
+const register_species = API + 'api/especie/save/'
 
 const all_query = API + 'api/consulta/all/';
 

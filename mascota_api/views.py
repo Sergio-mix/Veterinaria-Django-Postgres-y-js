@@ -216,12 +216,11 @@ def postEspecie(request, id):
             if especie_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="create"):
                     especie_serializer.save()
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Save", safe=False)
-                return JsonResponse("Added Successfully", safe=False)
-            return JsonResponse("Failed to Add", safe=False)
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 

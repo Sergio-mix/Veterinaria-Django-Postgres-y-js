@@ -3,6 +3,7 @@ llenarTablaColores();
 llenarTablaRazas();
 llenarTablaSpecies();
 llenarPets();
+
 //-----------------------------------------------------------------------------------------
 function closeModal() {
     document.getElementById('modal_container').classList.remove('show');
@@ -409,10 +410,62 @@ async function llenarTablaSpecies() {
     document.querySelector('#tableSpecies tbody').outerHTML = listHtml;
 }
 
+function openAddSpecies() {
+    document.getElementById('titleModal').innerText = 'Add Specie'
+    document.getElementById('modal_container').classList.add('show');
+
+    document.getElementById('containerModal').innerHTML =
+        '<div class="row g-3 modal-dialog-scrollable navbar-nav-scroll">\n' +
+        '                    <div class="col-md-12">\n' +
+        '                        <label for="txtName" class="form-label">Name</label>\n' +
+        '                        <input id="txtName" type="text" class="form-control">\n' +
+        '                    </div>\n' +
+        '                    <div class="col-12">\n' +
+        '                        <div class="form-group label-floating">\n' +
+        '                            <label for="txtPasswordModal" class="form-label">Current password</label>\n' +
+        '                            <input class="form-control" type="password" id="txtPasswordModal">\n' +
+        '                        </div>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="col-12">\n' +
+        '                    <button id="onClickRace" type="button" class="btn btn-primary">Register</button>\n' +
+        '                    <button class="btn btn-outline-primary btn-sm " onclick="closeModal()">Close</button>\n' +
+        '                </div>';
+
+
+    document.getElementById('onClickRace').onclick = async function () {
+        let name = document.getElementById('txtName').value;
+        let password = document.getElementById('txtPasswordModal').value;
+
+        if (name !== "" && password !== "") {
+            let userLogin = await user_login({
+                "correo": email,
+                "clave": password
+            }, false);
+            if (userLogin.status) {
+                let res = await queryPT('POST', register_species + id, {
+                    'nombre': capitalizar(name)
+                }, false);
+                if (res.status) {
+                    await llenarTablaSpecies();
+                    closeModal();
+                } else {
+                    alert(res.message);
+                }
+            } else {
+                alert(userLogin.message);
+            }
+        } else {
+            alert('The values entered are not valid');
+        }
+    }
+}
+
 function openRemoveSpecies(codigo, btn) {
     document.getElementById('titleTable').innerText = 'Remove Species'
     document.getElementById('modal_container_remove').classList.add('show');
 }
+
 //------------------------------------------------------------------------------------------
 async function llenarPets() {
     const request = await fetch(all_pet + id, {
@@ -474,7 +527,6 @@ function openRemovePets(codigo, btn) {
     document.getElementById('titleTable').innerText = 'Remove Pet'
     document.getElementById('modal_container_remove').classList.add('show');
 }
-
 
 
 function closeRemove() {
