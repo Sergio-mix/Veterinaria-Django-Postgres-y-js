@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 
 from usuario_api.methods import HistorialMethods
-from argon2 import PasswordHasher
+from argon2 import PasswordHasher, exceptions
 
 from usuario_api.models import Usuario, Historial, Rol, TipoIdentificacion
 from usuario_api.serializer import UsuarioSerializer, HistorialSerializer, RolSerializer, TipoIdentificacionSerializer
@@ -16,23 +16,19 @@ from usuario_api.serializer import UsuarioSerializer, HistorialSerializer, RolSe
 def authenticate(request):
     try:
         email = JSONParser().parse(request)
-        if Usuario.objects.filter(correo=email['correo']).exists():
-            user = Usuario.objects.get(correo=email['correo'])
-            if user.estado == 'C':
-                if PasswordHasher().verify(user.clave, email['clave']):
-                    if HistorialMethods().create(usuario=user.id, evento="authenticate"):
-                        us = {"status": True, "id": user.id, "rol": user.rol.id}
-                        return JsonResponse(us, safe=False)
-                    else:
-                        return JsonResponse({"status": False, "message": "User error"}, safe=False)
-                else:
-                    return JsonResponse({"status": False, "message": "The key is wrong"}, safe=False)
+        user = Usuario.objects.get(correo=email['correo'])
+        if user.estado == 'C':
+            PasswordHasher().verify(user.clave, email['clave'])
+            if HistorialMethods().create(usuario=user.id, evento="authenticate"):
+                return JsonResponse({"status": True, "id": user.id, "rol": user.rol.id}, safe=False)
             else:
-                return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+                return JsonResponse({"status": False, "message": "User error"}, safe=False)
         else:
-            return JsonResponse({"status": False, "message": "User does not exist"}, safe=False)
-    except Exception as error:
-        return JsonResponse({"status": False, "message": "Authentication error"}, safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Usuario.DoesNotExist:
+        return JsonResponse({"status": False, "message": "User does not exist"}, safe=False)
+    except (exceptions.VerifyMismatchError, exceptions.VerificationError):
+        return JsonResponse({"status": False, "message": "The key is wrong"}, safe=False)
 
 
 @api_view(['POST'])
@@ -48,22 +44,19 @@ def validate_Email(request):
 
 @api_view(['POST'])
 def get_user(request):
-    re = JSONParser().parse(request)
     try:
-        if Usuario.objects.filter(id=re['id']).exists():
-            us = Usuario.objects.get(id=re['id'])
-            if us.estado == 'C':
-                return JsonResponse(
-                    {"status": True, "nombres": us.nombres, "apellidos": us.apellidos, "telefono": us.telefono,
-                     "telefono_fijo": us.telefono_fijo, "direccion": us.direccion, "correo": us.correo,
-                     "identificacion": us.identificacion, "tipoNombre": us.tipo.nombre, "tipo": us.tipo.id}
-                    , safe=False)
-            else:
-                return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+        re = JSONParser().parse(request)
+        us = Usuario.objects.get(id=re['id'])
+        if us.estado == 'C':
+            return JsonResponse(
+                {"status": True, "nombres": us.nombres, "apellidos": us.apellidos, "telefono": us.telefono,
+                 "telefono_fijo": us.telefono_fijo, "direccion": us.direccion, "correo": us.correo,
+                 "identificacion": us.identificacion, "tipoNombre": us.tipo.nombre, "tipo": us.tipo.id}
+                , safe=False)
         else:
-            return JsonResponse({"status": False, "message": "Username does not exist"}, safe=False)
-    except Exception as error:
-        return http.HTTPStatus.NOT_FOUND
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Usuario.DoesNotExist:
+        return JsonResponse({"status": False, "message": "Username does not exist"}, safe=False)
 
 
 # Rol
@@ -75,6 +68,19 @@ def getRol(request):
         return JsonResponse(roles_serializer.data, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
+def get_user_id_type(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            usuario_data = JSONParser().parse(request)
+            user = Usuario.objects.get(identificacion=usuario_data['id'], tipo=usuario_data['tipo'])
+            return JsonResponse({"status": True, "id": user.id, "message": "Existing user"}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Usuario.DoesNotExist:
+        return JsonResponse({"status": False, "message": "User not register"}, safe=False)
 
 
 # Usuario

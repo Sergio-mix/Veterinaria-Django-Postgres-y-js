@@ -7,13 +7,16 @@ urlpatterns = [
     path('api/tipo/update/<int:id>', views.putTipoIdentificacion),
     path('api/tipo/remove/<int:id>/<int:user>', views.deleteTipoIdentificacion),
 
-    path('api/usuario/email', views.validate_Email),
     path('api/usuario/login', views.authenticate),
-    path('api/usuario', views.get_user),
-    path('api/rol/all', views.getRol),
+    path('api/usuario/email', views.validate_Email),
+    path('api/usuario/existing/<int:id>', views.get_user_id_type),
+    path('api/usuario/byid', views.get_user),
     path('api/usuario/all/<int:id>', views.getUser),
     path('api/usuario/save', views.postUser),
     path('api/usuario/update/<int:id>', views.putUser),
     path('api/usuario/remove/<int:id>/<int:user>', views.deleteUser),
+
+    path('api/rol/all', views.getRol),
+
     path('api/historial/all/<int:id>/<int:user>', views.getHistorial),
 ]

@@ -41,23 +41,3 @@ async function register() {
         alert('The values entered are not valid');
     }
 }
-
-async function tipoId() {
-    const request = await fetch(all_tipo_User, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    }).catch(err => {
-        alert('Process error');
-        location.reload();
-    });
-
-    const tipos = await request.json();
-
-    for (let tipo of tipos) {
-        document.getElementById('txtType').innerHTML +=
-            "<option value='" + tipo.id + "'>" + tipo.nombre + "</option>";
-    }
-}

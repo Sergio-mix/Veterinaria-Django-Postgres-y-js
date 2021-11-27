@@ -14,6 +14,7 @@ urlpatterns = [
     path('api/color/update/<int:id>', views.putColor),
     path('api/color/remove/<int:id>/<int:user>', views.deleteColor),
 
+    path('api/especie/byid/<int:id>', views.getEspecieByid),
     path('api/especie/all/<int:id>', views.getEspecie),
     path('api/especie/save/<int:id>', views.postEspecie),
     path('api/especie/update/<int:id>', views.putEspecie),

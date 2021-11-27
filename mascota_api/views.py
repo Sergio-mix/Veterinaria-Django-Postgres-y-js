@@ -70,11 +70,11 @@ def putRaza(request, id):
             if raza_data_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="update"):
                     raza_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Update")
+                    return JsonResponse({"status": True, "message": "Failed to Update"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": True, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -193,6 +193,19 @@ def deleteColor(request, id, user):
         return http.HTTPStatus.NOT_FOUND
 
 
+@api_view(['POST'])
+def getEspecieByid(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            especie = Especie.objects.get(id=JSONParser().parse(request)["id"])
+            return JsonResponse({"status": True, "nombre": especie.nombre}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        print(error)
+        return http.HTTPStatus.NOT_FOUND
+
+
 @api_view(['GET'])
 def getEspecie(request, id):
     try:
@@ -236,11 +249,11 @@ def putEspecie(request, id):
             if especie_data_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="update"):
                     especie_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Update")
+                    return JsonResponse({"status": False, "message": "Failed to Update"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": True, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -253,11 +266,11 @@ def deleteEspecie(request, id, user):
             ep.estado = 'D'
             if HistorialMethods().create(usuario=user, evento="remove"):
                 ep.save()
-                return JsonResponse("Deleted Successfully", safe=False)
+                return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
-                return JsonResponse("Failed to Deleted")
+                return JsonResponse({"status": False, "message": "Failed to Deleted"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -291,7 +304,8 @@ def getMascotaById(request, id):
 
             return JsonResponse({"id": mascota.id, "microchip": mascota.microchip, "raza": mascota.raza.id,
                                  "color": mascota.color.id, "nombre": mascota.nombre, "especie": mascota.especie.id,
-                                 "fecha_nacimiento": mascota.fecha_nacimiento, "sexo": mascota.sexo}, safe=False)
+                                 "fecha_nacimiento": mascota.fecha_nacimiento, "sexo": mascota.sexo,
+                                 "usuario": mascota.usuario.id}, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
