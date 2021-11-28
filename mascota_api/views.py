@@ -8,6 +8,7 @@ from mascota_api.models import Raza, Color, Especie, Mascota, Consulta
 from mascota_api.serializer import RazaSerializer, ColorSerializer, EspecieSerializer, MascotaSerializer, \
     ConsultaSerializer
 from usuario_api.methods import HistorialMethods
+from datetime import datetime
 
 from usuario_api.models import Usuario
 
@@ -319,12 +320,11 @@ def getMascota(request, id):
         if Usuario.objects.get(id=id).estado == 'C':
             mascotas = Mascota.objects.filter(estado='C')
             list = []
-
             for pet in mascotas:
                 list.append({"id": pet.id, "microchip": pet.microchip, "raza": pet.raza.nombre,
                              "color": pet.color.nombre, "nombre": pet.nombre, "especie": pet.especie.nombre,
                              "fecha_nacimiento": pet.fecha_nacimiento, "sexo": pet.sexo,
-                             "tamanio": pet.raza.tamanio})
+                             "tamanio": pet.raza.tamanio, "usuario": pet.usuario.correo})
 
             return JsonResponse(list, safe=False)
         else:
@@ -412,12 +412,31 @@ def getConsulta(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
             consulta = Consulta.objects.filter(estado='C')
-            consulta_serializer = ConsultaSerializer(consulta, many=True)
+            list = []
+            for query in consulta:
+                list.append(
+                    {"mascota": query.mascota.nombre, "usuario": query.mascota.usuario.correo, "peso": query.peso,
+                     "tipo": query.tipo, "fecha": query.fecha})
 
-            if HistorialMethods().create(usuario=id, evento="list"):
-                return JsonResponse(consulta_serializer.data, safe=False)
-            else:
-                return JsonResponse("Failed to All", safe=False)
+            return JsonResponse(list, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getConsultagetUser(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            consulta = Consulta.objects.filter(estado='C', mascota__usuario__id=id)
+            list = []
+            for query in consulta:
+                list.append(
+                    {"mascota": query.mascota.nombre, "peso": query.peso,
+                     "tipo": query.tipo, "fecha": query.fecha})
+
+            return JsonResponse(list, safe=False)
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
@@ -430,51 +449,19 @@ def postConsulta(request, id):
         if Usuario.objects.get(id=id).estado == 'C':
             consulta_data = JSONParser().parse(request)
             consulta_data['estado'] = 'C'
-            consulta_serializer = ConsultaSerializer(data=postConsulta)
+            date = datetime.now()
+            consulta_data['fecha'] = date.strftime("%Y-%m-%d")
+            consulta_serializer = ConsultaSerializer(data=consulta_data)
             if consulta_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create query"):
                     consulta_serializer.save()
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Save", safe=False)
-                return JsonResponse("Added Successfully", safe=False)
-            return JsonResponse("Failed to Add", safe=False)
-        else:
-            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
-    except Exception as error:
-        return http.HTTPStatus.NOT_FOUND
-
-
-@api_view(['PUT'])
-def putConsulta(request, id):
-    try:
-        if Usuario.objects.get(id=id).estado == 'C':
-            consulta_data = JSONParser().parse(request)
-            consulta = Consulta.objects.get(id=consulta_data['id'])
-            consulta_data_serializer = ConsultaSerializer(consulta, data=consulta_data)
-            if consulta_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
-                    consulta_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
-                else:
-                    return JsonResponse("Failed to Update")
-        else:
-            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
-    except Exception as error:
-        return http.HTTPStatus.NOT_FOUND
-
-
-@api_view(['DELETE'])
-def deleteConsulta(request, id, user):
-    try:
-        if Usuario.objects.get(id=user).estado == 'C':
-            ct = Consulta.objects.get(id=id)
-            ct.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
-                ct.save()
-                return JsonResponse("Deleted Successfully", safe=False)
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
             else:
-                return JsonResponse("Failed to Deleted")
+                return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
+        print(error)
         return http.HTTPStatus.NOT_FOUND

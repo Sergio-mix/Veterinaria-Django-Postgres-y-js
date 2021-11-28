@@ -10,6 +10,7 @@ async function llenarUsers() {
     })
 
     const users = await request.json();
+    document.getElementById('txtNumUser').innerText = users.length
 
     let listHtml = '';
     for (let user of users) {
@@ -19,6 +20,14 @@ async function llenarUsers() {
             fijo = 'Undefined'
         } else {
             fijo = user.telefono_fijo
+        }
+
+        let removeUs = "<button style=\"color: #dc4d5c\" class=\"btn btn-sm btn-neutral\" " +
+            "onclick='openRemoveUser(" + user.id + ",this" + ")'>" +
+            "Remove</button>";
+
+        if(user.id === +id){
+            removeUs = '';
         }
 
         let fila =
@@ -32,9 +41,7 @@ async function llenarUsers() {
             "<td>" +
             // "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" " +
             // "onclick='updateUser(" + user.id + ")'>Update</button>" +
-            "<button style=\"color: #dc4d5c\" class=\"btn btn-sm btn-neutral\" " +
-            "onclick='openRemoveUser(" + user.id + ",this" + ")'>" +
-            "Remove</button>" +
+            removeUs +
             "<button style=\"color: rgb(0,167,255)\" class=\"btn btn-sm btn-neutral\" " +
             "onclick='record(" + user.id + ")'>Record</button>" +
             "</td></tr>";

@@ -13,7 +13,7 @@ const history_user = API + 'api/historial/all/';
 
 const typeDocument_all = API + 'api/tipo/all';
 const save_tipo = API + 'api/tipo/save/';
-const remove_tipo = API +'api/tipo/remove/';
+const remove_tipo = API + 'api/tipo/remove/';
 const update_tipo = API + 'api/tipo/update/';
 const getByid_tipo = API + 'api/tipo/byid/';
 
@@ -41,7 +41,9 @@ const register_species = API + 'api/especie/save/'
 const remove_species = API + 'api/especie/remove/';
 const update_species = API + 'api/especie/update/';
 
+const register_Query_pet = API + 'api/consulta/save/';
 const all_query = API + 'api/consulta/all/';
+const all_get_query = API + 'api/consulta/all/user/';
 
 const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
@@ -197,4 +199,52 @@ function capitalizar(sr) {
 function doOpen(url) {
     document.location.target = "_blank";
     document.location.href = url;
+}
+
+function doSearch(table, input) {
+
+    const tableReg = document.getElementById(table);
+
+    const searchText = document.getElementById(input).value.toLowerCase();
+
+    let total = 0;
+
+    for (let i = 1; i < tableReg.rows.length; i++) {
+
+        if (tableReg.rows[i].classList.contains("noSearch")) {
+            continue;
+        }
+
+        let found = false;
+
+        const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+
+        for (let j = 0; j < cellsOfRow.length && !found; j++) {
+
+            const compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+
+            if (searchText.length === 0 || compareWith.indexOf(searchText) > -1) {
+                found = true;
+
+                total++;
+            }
+        }
+
+        if (found) {
+
+            tableReg.rows[i].style.display = '';
+
+        } else {
+
+            tableReg.rows[i].style.display = 'none';
+        }
+    }
+
+    const lastTR = tableReg.rows[tableReg.rows.length - 1];
+
+    lastTR.classList.remove("hide", "red");
+
+    if (searchText === "") {
+        lastTR.classList.add("hide");
+    }
 }

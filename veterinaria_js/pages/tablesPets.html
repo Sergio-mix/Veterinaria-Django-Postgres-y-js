@@ -197,14 +197,24 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Pets</h6>
+                        <h6>Pets: <strong id="txtNumPet"></strong></h6>
                         <button class="btn btn-sm btn-neutral" onclick="openAddPet()">Add Pet</button>
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTerm" placeholder="Search"
+                                       onkeyup="doSearch('tablePets','searchTerm')" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table id="tablePets" class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        User
+                                    </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Microchip
                                     </th>
@@ -249,8 +259,15 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Pet color</h6>
+                        <h6>Pet color: <strong id="txtNumColor"></strong></h6>
                         <button class="btn btn-sm btn-neutral" onclick="openAddColor()">Add Color</button>
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTermColor" placeholder="Search"
+                                       onkeyup="doSearch('tableColores','searchTermColor')" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -280,8 +297,15 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Pet Race</h6>
+                        <h6>Pet Race: <strong id="txtNumRace"></strong></h6>
                         <button class="btn btn-sm btn-neutral" onclick="openAddRace()">Add Race</button>
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTermRace" placeholder="Search"
+                                       onkeyup="doSearch('tableRace','searchTermRace')" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -314,8 +338,15 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Pet Specie</h6>
+                        <h6>Pet Specie: <strong id="txtNumSpecie"></strong></h6>
                         <button class="btn btn-sm btn-neutral" onclick="openAddSpecies()">Add Species</button>
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTermSpecies" placeholder="Search"
+                                       onkeyup="doSearch('tableSpecies','searchTermSpecies')" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">

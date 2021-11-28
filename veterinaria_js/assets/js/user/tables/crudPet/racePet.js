@@ -11,6 +11,7 @@ async function llenarTablaRazas() {
     })
 
     const races = await request.json();
+    document.getElementById('txtNumRace').innerText = races.length;
 
     let listHtml = '';
     for (let race of races) {

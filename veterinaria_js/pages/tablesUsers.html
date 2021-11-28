@@ -197,8 +197,17 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Users</h6>
+                        <h6>Users: <strong id="txtNumUser"></strong></h6>
+
                         <button class="btn btn-sm btn-neutral" onclick="addUser()">Add User</button>
+
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTerm" placeholder="Search"
+                                       onkeyup="doSearch('tableUser','searchTerm')" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -246,7 +255,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Document type</h6>
+                        <h6>Document type: <strong id="txtNumType"></strong></h6>
                         <button class="btn btn-sm btn-neutral" onclick="addDocumentType()">Add Document type</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">

@@ -11,6 +11,7 @@ async function llenarPets() {
     })
 
     const pets = await request.json();
+    document.getElementById('txtNumPet').innerText = pets.length;
 
     let listHtml = '';
     for (let pet of pets) {
@@ -31,7 +32,8 @@ async function llenarPets() {
         }
 
         let fila =
-            "<tr><td> " + microchip + "</td>" +
+            "<tr><td> " + pet.usuario + "</td>" +
+            "<td> " + pet.microchip + "</td>" +
             "<td> " + pet.nombre + "</td>" +
             "<td> " + pet.color + "</td>" +
             "<td> " + pet.especie + "</td>" +
@@ -123,7 +125,7 @@ function openAddPet() {
         '                    <input type="date" class="form-control" id="txtBirth_date">\n' +
         '                </div>' +
         '                <div class="col-md-4">\n' +
-        '                    <label for="txtBirth_date" class="form-label">number</label>\n' +
+        '                    <label for="txtNumerId" class="form-label">number</label>\n' +
         '                    <input type="number" class="form-control" id="txtNumerId">\n' +
         '                </div>' +
         '                <div class="col-md-2">\n' +

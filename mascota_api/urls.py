@@ -28,8 +28,6 @@ urlpatterns = [
     path('api/mascota/remove/<int:id>/<int:user>', views.deleteMacota),
 
     path('api/consulta/all/<int:id>', views.getConsulta),
+    path('api/consulta/all/user/<int:id>', views.getConsultagetUser),
     path('api/consulta/save/<int:id>', views.postConsulta),
-    path('api/consulta/update/<int:id>', views.putConsulta),
-    path('api/consulta/remove/<int:id>/<int:user>', views.deleteConsulta),
-
 ]

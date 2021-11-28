@@ -11,6 +11,7 @@ async function llenarTablaSpecies() {
     })
 
     const races = await request.json();
+    document.getElementById('txtNumSpecie').innerText = races.length;
 
     let listHtml = '';
     for (let race of races) {

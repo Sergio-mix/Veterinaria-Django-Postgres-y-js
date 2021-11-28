@@ -2,6 +2,7 @@ id = sessionStorage.getItem('id')
 email = sessionStorage.getItem('email')
 data();
 llenarTabla();
+llenarTablaQuerys();
 
 async function data() {
     let user = await queryPT('POST', user_get, {"id": id}, true);
@@ -308,6 +309,7 @@ async function llenarTabla() {
     })
 
     const pets = await request.json();
+    document.getElementById('txtNumPet').innerHTML = pets.length;
 
     let listHtml = '';
     for (let pet of pets) {
@@ -348,4 +350,33 @@ async function llenarTabla() {
     }
 
     document.querySelector('#table_pet tbody').outerHTML = listHtml;
+}
+
+async function llenarTablaQuerys() {
+    const request = await fetch(all_get_query + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        location.reload();
+    })
+
+    const query = await request.json();
+    document.getElementById('txtNumQuerie').innerText = query.length;
+
+    let listHtml = '';
+    for (let q of query) {
+        let fila =
+            "<tr><td> " + q.mascota + "</td>" +
+            "<td> " + q.peso + ' Kg' + "</td>" +
+            "<td> " + q.tipo + "</td>" +
+            "<td> " + q.fecha + "</td>" +
+            "</tr>";
+
+        listHtml += fila;
+    }
+
+    document.querySelector('#tableQueries tbody').outerHTML = listHtml;
 }
