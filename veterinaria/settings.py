@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'servicio_api.apps.ServicioApiConfig',
     'usuario_api.apps.UsuarioApiConfig',
-    'mascota_api.apps.MascotaApiConfig'
+    'mascota_api.apps.MascotaApiConfig',
+
 ]
 
 MIDDLEWARE = [

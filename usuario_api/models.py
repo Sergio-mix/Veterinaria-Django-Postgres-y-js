@@ -27,7 +27,7 @@ class TipoIdentificacion(models.Model):
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     correo = models.CharField(max_length=254, null=False, unique=True)
-    clave = models.CharField(max_length=254, null=False)
+    clave = models.EmailField(max_length=254, null=False)
     rol = models.ForeignKey(Rol, null=False, on_delete=models.CASCADE)
     identificacion = models.CharField(max_length=50, null=False)
     tipo = models.ForeignKey(TipoIdentificacion, null=False, on_delete=models.CASCADE)

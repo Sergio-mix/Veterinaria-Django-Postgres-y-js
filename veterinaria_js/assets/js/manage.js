@@ -179,7 +179,6 @@ async function tipoId() {
             'Content-Type': 'application/json'
         }
     }).catch(err => {
-        alert('Process error');
         location.reload();
     });
 

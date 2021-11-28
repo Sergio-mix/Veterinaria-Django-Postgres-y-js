@@ -24,4 +24,5 @@ urlpatterns = [
 urlpatterns += [
     path('', include('usuario_api.urls')),
     path('', include('mascota_api.urls')),
+    path('', include('servicio_api.urls'))
 ]
