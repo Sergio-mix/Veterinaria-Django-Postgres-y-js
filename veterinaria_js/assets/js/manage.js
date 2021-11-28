@@ -7,6 +7,9 @@ const user_get = API + 'api/usuario/byid';
 const user_all = API + 'api/usuario/all/';
 const user_exists = API + 'api/usuario/existing/';
 const update_user = API + 'api/usuario/update/';
+const remove_user = API + 'api/usuario/remove/';
+
+const history_user = API + 'api/historial/all/';
 
 const typeDocument_all = API + 'api/tipo/all';
 const save_tipo = API + 'api/tipo/save/';
@@ -39,6 +42,8 @@ const remove_species = API + 'api/especie/remove/';
 const update_species = API + 'api/especie/update/';
 
 const all_query = API + 'api/consulta/all/';
+
+const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 
 function user_login(user, error) {

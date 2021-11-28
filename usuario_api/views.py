@@ -35,7 +35,7 @@ def authenticate(request):
 def validate_Email(request):
     try:
         if Usuario.objects.filter(correo=JSONParser().parse(request)['email']).exists():
-            return JsonResponse({"status": True}, safe=False)
+            return JsonResponse({"status": True, "message": "The email is already in use"}, safe=False)
         else:
             return JsonResponse({"status": False}, safe=False)
     except Exception as error:
@@ -156,11 +156,11 @@ def deleteUser(request, id, user):
             us.estado = 'D'
             if HistorialMethods().create(usuario=user, evento="remove"):
                 us.save()
-                return JsonResponse("Deleted Successfully", safe=False)
+                return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
-                return JsonResponse("Failed to Deleted")
+                return JsonResponse({"status": False, "message": "Failed to Deleted"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -256,10 +256,10 @@ def getHistorial(request, id, user):
                 if HistorialMethods().create(usuario=user, evento="history list"):
                     return JsonResponse(historial_serializer.data, safe=False)
                 else:
-                    return JsonResponse("Failed to all")
+                    return JsonResponse({"status": True, "message": "Failed to all"}, safe=False)
             else:
-                return JsonResponse("Not authorized")
+                return JsonResponse({"status": False, "message": "Not authorized"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
