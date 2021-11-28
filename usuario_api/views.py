@@ -165,6 +165,19 @@ def deleteUser(request, id, user):
         return http.HTTPStatus.NOT_FOUND
 
 
+@api_view(['POST'])
+def getTipoIdentificacionByid(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            date_tipo = JSONParser().parse(request)
+            tipo = TipoIdentificacion.objects.get(id=date_tipo['id'])
+            return JsonResponse({"status": True, "nombre": tipo.nombre}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
 @api_view(['GET'])
 def getTipoIdentificacion(request):
     try:
@@ -185,10 +198,10 @@ def postTipoIdentificacion(request, id):
             if tipo_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="save"):
                     tipo_serializer.save()
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Save", safe=False)
-                return JsonResponse("Added Successfully", safe=False)
-            return JsonResponse("Failed to Add", safe=False)
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
+            return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
     except Exception as error:
@@ -201,16 +214,15 @@ def putTipoIdentificacion(request, id):
         if Usuario.objects.get(id=id).estado == 'C':
             tipo_data = JSONParser().parse(request)
             tipo = TipoIdentificacion.objects.get(id=tipo_data['id'])
-
             tipo_data_serializer = TipoIdentificacionSerializer(tipo, data=tipo_data)
             if tipo_data_serializer.is_valid():
                 if HistorialMethods().create(usuario=id, evento="update"):
                     tipo_data_serializer.save()
-                    return JsonResponse("Updated Successfully", safe=False)
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
-                    return JsonResponse("Failed to Update")
+                    return JsonResponse({"status": False, "message": "Failed to Update"}, safe=False)
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
@@ -223,11 +235,11 @@ def deleteTipoIdentificacion(request, id, user):
             ti.estado = 'D'
             if HistorialMethods().create(usuario=user, evento="remove"):
                 ti.save()
-                return JsonResponse("Deleted Successfully", safe=False)
+                return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
-                return JsonResponse("Failed to Deleted")
+                return JsonResponse({"status": False, "message": "Failed to Deleted"})
         else:
-            return JsonResponse("User not enabled", safe=False)
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 

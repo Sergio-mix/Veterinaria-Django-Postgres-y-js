@@ -9,7 +9,10 @@ const user_exists = API + 'api/usuario/existing/';
 const update_user = API + 'api/usuario/update/';
 
 const typeDocument_all = API + 'api/tipo/all';
-const all_tipo_User = API + 'api/tipo/all';
+const save_tipo = API + 'api/tipo/save/';
+const remove_tipo = API +'api/tipo/remove/';
+const update_tipo = API + 'api/tipo/update/';
+const getByid_tipo = API + 'api/tipo/byid/';
 
 const all_pet = API + 'api/mascota/all/';
 const get_pet = API + 'api/mascota/byid/';
@@ -162,7 +165,7 @@ async function species() {
 }
 
 async function tipoId() {
-    const request = await fetch(all_tipo_User, {
+    const request = await fetch(typeDocument_all, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

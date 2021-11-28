@@ -2,6 +2,7 @@ from django.urls import path
 from usuario_api import views
 
 urlpatterns = [
+    path('api/tipo/byid/<int:id>', views.getTipoIdentificacionByid),
     path('api/tipo/all', views.getTipoIdentificacion),
     path('api/tipo/save/<int:id>', views.postTipoIdentificacion),
     path('api/tipo/update/<int:id>', views.putTipoIdentificacion),
