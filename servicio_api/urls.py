@@ -8,5 +8,8 @@ urlpatterns = [
     path('api/servicio/update/<int:id>', views.putService),
     path('api/servicio/remove/<int:id>/<int:user>', views.deleteService),
 
+    path('api/factura/save/<int:id>', views.postServicio_factura),
+    path('api/factura/all/<int:id>', views.getFactura_all),
+
     path('api/historialservicios/all/<int:id>', views.getHistorialServicio)
 ]

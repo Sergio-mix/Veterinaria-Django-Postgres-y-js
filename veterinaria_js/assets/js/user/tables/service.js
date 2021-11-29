@@ -99,17 +99,31 @@ async function registerInvoice() {
             description = null;
         }
 
-        let query = {
-            "mascota": parseInt(idPet),
-            "peso": weight,
-            "tipo": type,
-            "fecha": null,
-            "descripcion": description,
+        if (additional !== "") {
+            let sum = parseInt(totalCost);
+            sum += parseInt(additional);
+            totalCost = sum;
         }
 
-        
-        let res = await queryPT('POST', register_Query_pet + id, query, false);
+        let query = {
+            "mascota": +idPet,
+            "peso": weight,
+            "tipo": +type,
+            "fecha": null,
+            "descripcion": description,
+            "costo_total": +totalCost,
+            "forma_pago": waytopay,
+            "services": listService
+        }
 
+        let res = await queryPT('POST', register_Invoice + id, query, false);
+
+        if (res.status) {
+            alert(res.message);
+            doOpen('queryPet.html');
+        } else {
+            res.message;
+        }
     } else {
         alert('There are no associated services');
     }

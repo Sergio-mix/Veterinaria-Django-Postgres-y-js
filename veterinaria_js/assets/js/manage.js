@@ -57,6 +57,9 @@ const register_type = API + 'api/tipoconsulta/save/';
 const remove_type = API + 'api/tipoconsulta/remove/';
 const update_type = API + 'api/tipoconsulta/update/';
 
+const register_Invoice = API + 'api/factura/save/';
+const all_Invoice = API + 'api/factura/all/';
+
 const all_record_service_all = API + 'api/historialservicios/all/';
 
 
