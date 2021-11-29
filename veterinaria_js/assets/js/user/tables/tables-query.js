@@ -207,12 +207,19 @@ async function llenarInvoice() {
 
     let listHtml = '';
     for (let b of bills) {
+
+        let services = []
+        for (let s of b.lista) {
+            services.push(s.servicio)
+        }
+
         let fila =
             "<tr><td> " + b.usuario + "</td>" +
             "<td> " + b.mascota + "</td>" +
+            "<td> " + b.costo_total + "</td>" +
             "<td> " + b.forma_pago + ' Kg' + "</td>" +
             "<td> " + b.fecha + "</td>" +
-            "<td> " + b.fecha + "</td>" +
+            "<td> " + services + "</td>" +
             "</tr>";
 
         listHtml += fila;
