@@ -11,7 +11,6 @@ async function llenarTablaColores() {
     })
 
     const colors = await request.json();
-    document.getElementById('txtNumColor').innerText = colors.length;
 
     let listHtml = '';
     for (let color of colors) {
@@ -29,6 +28,7 @@ async function llenarTablaColores() {
     }
 
     document.querySelector('#tableColores tbody').outerHTML = listHtml;
+    document.getElementById('txtNumColor').innerText = colors.length;
 }
 
 function openAddColor() {

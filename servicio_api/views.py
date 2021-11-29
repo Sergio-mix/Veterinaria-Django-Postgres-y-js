@@ -1,13 +1,13 @@
 import http
 
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 
 from servicio_api.methods import HistorialServiciosMethods
-from servicio_api.serializer import ServicioSerializer, FacturaSerializer
-from servicio_api.serializer import Servicio, Factura
+from servicio_api.models import HistoricoServicio
+from servicio_api.serializer import ServicioSerializer
+from servicio_api.serializer import Servicio
 
 # Create your views here.
 from usuario_api.methods import HistorialMethods
@@ -105,5 +105,21 @@ def deleteService(request, id, user):
                 return JsonResponse({"status": False, "message": "Failed to Deleted"}, safe=False)
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getHistorialServicio(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            historial = HistoricoServicio.objects.filter(estado='C')
+            list = []
+            for h in historial:
+                list.append({"id": h.id, "nombre": h.servicio.nombre, "fecha": h.fecha, "tarifa": h.tarifa})
+
+            return JsonResponse(list, safe=False)
+        else:
+            return JsonResponse("User not enabled", safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND

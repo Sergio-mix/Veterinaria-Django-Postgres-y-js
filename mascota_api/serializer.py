@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mascota_api.models import Mascota, Raza, Color, Especie, Consulta
+from mascota_api.models import Mascota, Raza, Color, Especie, Consulta, TipoConsulta
 
 
 class MascotaSerializer(serializers.ModelSerializer):
@@ -41,6 +41,6 @@ class ConsultaSerializer(serializers.ModelSerializer):
 
 class TipoConsultaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Consulta
+        model = TipoConsulta
         fields = (
             'id', 'nombre', 'estado')

@@ -1,4 +1,5 @@
 tipoId();
+tipoQuery();
 llenarQuery();
 
 async function llenarQuery() {
@@ -13,7 +14,6 @@ async function llenarQuery() {
     })
 
     const query = await request.json();
-    document.getElementById('txtNumQuerie').innerText = query.length;
 
     let listHtml = '';
     for (let q of query) {
@@ -29,6 +29,7 @@ async function llenarQuery() {
     }
 
     document.querySelector('#tableQueries tbody').outerHTML = listHtml;
+    document.getElementById('txtNumQuerie').innerText = query.length;
 }
 
 async function openAdd() {

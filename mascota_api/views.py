@@ -391,23 +391,6 @@ def deleteMacota(request, id, user):
 
 
 @api_view(['GET'])
-def getTipoConsulta(request, id):
-    try:
-        if Usuario.objects.get(id=id).estado == 'C':
-            consulta = Consulta.objects.filter(estado='C')
-            consulta_serializer = ConsultaSerializer(consulta, many=True)
-
-            if HistorialMethods().create(usuario=id, evento="list"):
-                return JsonResponse(consulta_serializer.data, safe=False)
-            else:
-                return JsonResponse("Failed to All", safe=False)
-        else:
-            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
-    except Exception as error:
-        return http.HTTPStatus.NOT_FOUND
-
-
-@api_view(['GET'])
 def getConsulta(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
@@ -416,7 +399,7 @@ def getConsulta(request, id):
             for query in consulta:
                 list.append(
                     {"mascota": query.mascota.nombre, "usuario": query.mascota.usuario.correo, "peso": query.peso,
-                     "tipo": query.tipo, "fecha": query.fecha})
+                     "tipo": query.tipo.nombre, "fecha": query.fecha})
 
             return JsonResponse(list, safe=False)
         else:
@@ -434,7 +417,7 @@ def getConsultagetUser(request, id):
             for query in consulta:
                 list.append(
                     {"mascota": query.mascota.nombre, "peso": query.peso,
-                     "tipo": query.tipo, "fecha": query.fecha})
+                     "tipo": query.tipo.nombre, "fecha": query.fecha})
 
             return JsonResponse(list, safe=False)
         else:
@@ -448,6 +431,7 @@ def postConsulta(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
             consulta_data = JSONParser().parse(request)
+            print(consulta_data)
             consulta_data['estado'] = 'C'
             date = datetime.now()
             consulta_data['fecha'] = date.strftime("%Y-%m-%d")
@@ -463,7 +447,20 @@ def postConsulta(request, id):
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        print(error)
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
+def getTipoConsultaById(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            consultaTipo = JSONParser().parse(request)
+            consulta_Tipo = TipoConsulta.objects.get(id=consultaTipo['id'])
+
+            return JsonResponse({"status": True, "id": consulta_Tipo.id, "nombre": consulta_Tipo.nombre}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
         return http.HTTPStatus.NOT_FOUND
 
 
@@ -474,7 +471,7 @@ def getTipoConsulta(request, id):
             coansultas = TipoConsulta.objects.filter(estado='C')
             list = []
             for consulta in coansultas:
-                list.append({"id": consulta.id, "nombre": consulta.microchip})
+                list.append({"id": consulta.id, "nombre": consulta.nombre})
             return JsonResponse(list, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
@@ -500,6 +497,7 @@ def postTipoConsulta(request, id):
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
+        print(error)
         return http.HTTPStatus.NOT_FOUND
 
 

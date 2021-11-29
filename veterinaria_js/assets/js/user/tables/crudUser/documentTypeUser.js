@@ -10,7 +10,6 @@ async function llenarTablaDocumentType() {
     })
 
     const types = await request.json();
-    document.getElementById('txtNumType').innerText = types.length;
 
     let listHtml = '';
     for (let type of types) {
@@ -28,6 +27,8 @@ async function llenarTablaDocumentType() {
     }
 
     document.querySelector('#tableDocumentType tbody').outerHTML = listHtml;
+    document.getElementById('txtNumType').innerText = types.length;
+
 }
 
 function addDocumentType() {

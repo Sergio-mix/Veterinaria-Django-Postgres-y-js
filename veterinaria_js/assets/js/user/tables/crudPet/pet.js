@@ -11,7 +11,6 @@ async function llenarPets() {
     })
 
     const pets = await request.json();
-    document.getElementById('txtNumPet').innerText = pets.length;
 
     let listHtml = '';
     for (let pet of pets) {
@@ -55,6 +54,7 @@ async function llenarPets() {
     }
 
     document.querySelector('#tablePets tbody').outerHTML = listHtml;
+    document.getElementById('txtNumPet').innerText = pets.length;
 }
 
 function openRemovePets(codigo, btn) {

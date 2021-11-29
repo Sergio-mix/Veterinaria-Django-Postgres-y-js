@@ -10,7 +10,6 @@ async function llenarUsers() {
     })
 
     const users = await request.json();
-    document.getElementById('txtNumUser').innerText = users.length
 
     let listHtml = '';
     for (let user of users) {
@@ -26,7 +25,7 @@ async function llenarUsers() {
             "onclick='openRemoveUser(" + user.id + ",this" + ")'>" +
             "Remove</button>";
 
-        if(user.id === +id){
+        if (user.id === +id) {
             removeUs = '';
         }
 
@@ -50,6 +49,7 @@ async function llenarUsers() {
     }
 
     document.querySelector('#tableUser tbody').outerHTML = listHtml;
+    document.getElementById('txtNumUser').innerText = users.length
 }
 
 function addUser() {
@@ -352,6 +352,7 @@ async function record(codigo) {
         '                    <div class="card-header pb-0">\n' +
         '                    </div>\n' +
         '                    <div class="card-body px-0 pt-0 pb-2">\n' +
+        '                    <h6 id="txtRecord"></h6>\n' +
         '                        <div class="table-responsive p-0">\n' +
         '                            <table id="tableRecord" class="table align-items-center mb-0 ">\n' +
         '                                <thead>\n' +
@@ -368,11 +369,12 @@ async function record(codigo) {
         '                                </tbody>\n' +
         '                            </table>\n' +
         '                        </div>\n' +
-        '                    </div>\n' +
+        '                    </h2>\n' +
         '                </div>\n' +
         '            </div>\n' +
         '        </div>\n' +
         '    </div>' +
+        '</div>' +
         '            <div class="col-12">\n' +
         '                    <button class="btn btn-outline-primary btn-sm " onclick="closeModal()">Close</button>\n' +
         '             </div>';
@@ -400,4 +402,5 @@ async function record(codigo) {
     }
 
     document.querySelector('#tableRecord tbody').outerHTML = listHtml;
+    document.getElementById('txtRecord').innerText = records.length;
 }

@@ -1,4 +1,6 @@
 llenarTablaService();
+llenarTablaTypeQuery();
+llenarTablaRecord();
 
 //-----------------------------------------------------------------------------------------
 function closeModal() {

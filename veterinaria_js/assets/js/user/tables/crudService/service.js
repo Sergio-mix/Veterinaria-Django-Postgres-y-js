@@ -11,7 +11,6 @@ async function llenarTablaService() {
     })
 
     const services = await request.json();
-    document.getElementById('txtNumService').innerText = services.length;
 
     let listHtml = '';
     for (let service of services) {
@@ -30,6 +29,7 @@ async function llenarTablaService() {
     }
 
     document.querySelector('#tableService tbody').outerHTML = listHtml;
+    document.getElementById('txtNumService').innerText = services.length;
 }
 
 function openAddService() {

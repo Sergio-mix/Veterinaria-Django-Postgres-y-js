@@ -51,6 +51,15 @@ const save_service = API + 'api/servicio/save/';
 const update_service = API + 'api/servicio/update/';
 const remove_service = API + 'api/servicio/remove/';
 
+const get_typeQuery = API + 'api/tipoconsulta/byid/';
+const all_type_all = API + 'api/tipoconsulta/all/';
+const register_type = API + 'api/tipoconsulta/save/';
+const remove_type = API + 'api/tipoconsulta/remove/';
+const update_type = API + 'api/tipoconsulta/update/';
+
+const all_record_service_all = API + 'api/historialservicios/all/';
+
+
 const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 
@@ -192,6 +201,25 @@ async function tipoId() {
 
     for (let tipo of tipos) {
         document.getElementById('txtType').innerHTML +=
+            "<option value='" + tipo.id + "'>" + tipo.nombre + "</option>";
+    }
+}
+
+async function tipoQuery() {
+    const request = await fetch(all_type_all + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        location.reload();
+    });
+
+    const tipos = await request.json();
+
+    for (let tipo of tipos) {
+        document.getElementById('txtTypeQuery').innerHTML +=
             "<option value='" + tipo.id + "'>" + tipo.nombre + "</option>";
     }
 }

@@ -17,10 +17,10 @@ class HistoricoServicioSerializer(serializers.ModelSerializer):
 class HistoricoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Historico
-        fields = ('id', 'consulta', 'servicio', 'estado')
+        fields = ('id', 'consulta', 'servicio', 'factura', 'estado')
 
 
 class FacturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Factura
-        fields = ('id', 'historico', 'costo_total', 'forma_pago', 'estado')
+        fields = ('id', 'costo_total', 'forma_pago', 'estado')

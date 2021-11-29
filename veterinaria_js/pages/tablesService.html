@@ -118,10 +118,20 @@
                     </div>
                     <div class="collapse  show ">
                         <ul class="nav ms-4 ps-3">
-                            <li class="nav-item active">
-                                <a class="nav-link active" href="tablesUsers.html">
+                            <li class="nav-item">
+                                <a class="nav-link" href="tablesUsers.html">
                                     <span class="sidenav-mini-icon">  U  </span>
                                     <span class="sidenav-normal"> User </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="collapse  show ">
+                        <ul class="nav ms-4 ps-3">
+                            <li class="nav-item active ">
+                                <a class="nav-link " href="tablesService.html">
+                                    <span class="sidenav-mini-icon"> S </span>
+                                    <span class="sidenav-normal"> Service </span>
                                 </a>
                             </li>
                         </ul>
@@ -170,7 +180,7 @@
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a>
                     </li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tables</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Service</li>
                 </ol>
                 <h4 id="userNameAdmin" class="font-weight-bolder mb-0"></h4>
             </nav>
@@ -204,8 +214,8 @@
                         <div class="container-fluid col-8">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                <input class="form-control" id="searchTerm" placeholder="Search"
-                                       onkeyup="doSearch('tableUser','searchTerm')" type="text">
+                                <input class="form-control" id="searchTermService" placeholder="Search"
+                                       onkeyup="doSearch('tableService','searchTermService')" type="text">
                             </div>
                         </div>
                     </div>
@@ -240,12 +250,19 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Document type: <strong id="txtNumType"></strong></h6>
-                        <button class="btn btn-sm btn-neutral" onclick="addDocumentType()">Add Document type</button>
+                        <h6>Query type: <strong id="txtNumType"></strong></h6>
+                        <button class="btn btn-sm btn-neutral" onclick="openAddType()">Add type</button>
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTermType" placeholder="Search"
+                                       onkeyup="doSearch('tableType','searchTermType')" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table id="tableDocumentType" class="table align-items-center mb-0">
+                            <table id="tableType" class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -253,6 +270,46 @@
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         #
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Record service: <strong id="txtRecord"></strong></h6>
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTermRecord" placeholder="Search"
+                                       onkeyup="doSearch('tableRecord','searchTermRecord')" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="tableRecord" class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Name
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Date
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Rare
                                     </th>
                                 </tr>
                                 </thead>
@@ -304,6 +361,7 @@
 <script src="../assets/js/user/user-admin.js"></script>
 <script src="../assets/js/user/tables/crudService/service.js"></script>
 <script src="../assets/js/user/tables/crudService/typeQuery.js"></script>
+<script src="../assets/js/user/tables/crudService/recordService.js"></script>
 <script src="../assets/js/user/tables/tables-service.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>
 <script src="../assets/js/core/bootstrap.min.js"></script>
