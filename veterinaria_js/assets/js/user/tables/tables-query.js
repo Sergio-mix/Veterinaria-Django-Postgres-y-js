@@ -217,7 +217,7 @@ async function llenarInvoice() {
             "<tr><td> " + b.usuario + "</td>" +
             "<td> " + b.mascota + "</td>" +
             "<td> " + b.costo_total + "</td>" +
-            "<td> " + b.forma_pago + ' Kg' + "</td>" +
+            "<td> " + b.forma_pago + "</td>" +
             "<td> " + b.fecha + "</td>" +
             "<td> " + services + "</td>" +
             "</tr>";
@@ -226,5 +226,5 @@ async function llenarInvoice() {
     }
 
     document.querySelector('#tableBills tbody').outerHTML = listHtml;
-    // document.getElementById('txtNumBills').innerText = bills.length;
+    document.getElementById('txtNumBills').innerText = bills.length;
 }
