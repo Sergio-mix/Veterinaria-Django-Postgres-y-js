@@ -79,8 +79,8 @@ function openAddRace() {
                     "tamanio": size
                 }, false);
                 if (res.status) {
-                    await llenarTablaRazas();
                     closeModal();
+                    await llenarTablaRazas();
                 } else {
                     alert(res.message);
                 }

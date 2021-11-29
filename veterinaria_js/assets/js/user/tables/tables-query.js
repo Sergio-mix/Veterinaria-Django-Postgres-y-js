@@ -105,7 +105,9 @@ async function openAdd() {
                 "<td> " + pet.raza + "</td>" +
                 "<td>" +
                 "<button style=\"color: rgba(0,255,82,0.61)\" class=\"btn btn-sm btn-neutral\" " +
-                "onclick='registerQuery(" + pet.id + ")'>Select</button>" +
+                "onclick='registerQuery(" + pet.id + ")'>Query</button>" +
+                "<button style=\"color: rgba(171,35,98,0.61)\" class=\"btn btn-sm btn-neutral\" " +
+                "onclick='registerService(" + pet.id + ")'>Service</button>" +
                 "</td>" +
                 "</tr>";
 
@@ -159,8 +161,8 @@ function registerQuery(codigo) {
         if (userLogin.status) {
             let res = await queryPT('POST', register_Query_pet + id, query, false);
             if (res.status) {
-                await llenarQuery();
                 closeModal();
+                await llenarQuery();
             } else {
                 alert(res.message);
             }
@@ -168,6 +170,25 @@ function registerQuery(codigo) {
             alert(userLogin.message);
         }
     }
+}
+
+function registerService(codigo){
+
+    document.getElementById('titleModal').innerText = 'Services';
+
+    document.getElementById('containerModal').innerHTML =
+        '           <div class="row g-3">\n' +
+        '                <div class="col-12">\n' +
+        '                    <div class="form-group label-floating">\n' +
+        '                        <label for="txtPasswordRemove" class="form-label">Current password</label>\n' +
+        '                        <input class="form-control" type="password" id="txtPasswordAuthentication">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="col-12">\n' +
+        '                    <button id="onClickQuery" type="button" class="btn btn-primary">Ok</button>\n' +
+        '                    <button class="btn btn-outline-primary btn-sm " onclick="closeModal()">Close</button>\n' +
+        '                </div>\n' +
+        '            </div>';
 }
 
 function closeModal() {

@@ -1,9 +1,10 @@
-from django.conf.urls import url
+from django.urls import path
 from servicio_api import views
 
 urlpatterns = [
-                  url(r'^api/servicio$', views.servicioApi),
-                  url(r'^api/servicio/([0-9]+)$', views.servicioApi),
-                  url(r'^api/factura$', views.facturaApi),
-                  url(r'^api/factura/([0-9]+)$', views.facturaApi)
-              ]
+    path('api/servicio/byid/<int:id>', views.getServicioById),
+    path('api/servicio/all/<int:id>', views.getServicio),
+    path('api/servicio/save/<int:id>', views.postService),
+    path('api/servicio/update/<int:id>', views.putService),
+    path('api/servicio/remove/<int:id>/<int:user>', views.deleteService)
+]

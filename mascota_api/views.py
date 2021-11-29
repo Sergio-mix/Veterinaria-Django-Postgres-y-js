@@ -4,9 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 
-from mascota_api.models import Raza, Color, Especie, Mascota, Consulta
+from mascota_api.models import Raza, Color, Especie, Mascota, Consulta, TipoConsulta
 from mascota_api.serializer import RazaSerializer, ColorSerializer, EspecieSerializer, MascotaSerializer, \
-    ConsultaSerializer
+    ConsultaSerializer, TipoConsultaSerializer
 from usuario_api.methods import HistorialMethods
 from datetime import datetime
 
@@ -464,4 +464,77 @@ def postConsulta(request, id):
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         print(error)
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getTipoConsulta(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            coansultas = TipoConsulta.objects.filter(estado='C')
+            list = []
+            for consulta in coansultas:
+                list.append({"id": consulta.id, "nombre": consulta.microchip})
+            return JsonResponse(list, safe=False)
+        else:
+            return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['POST'])
+def postTipoConsulta(request, id):
+    try:
+        tipo_coansulta_data = JSONParser().parse(request)
+        if Usuario.objects.get(id=id).estado == 'C':
+            tipo_coansulta_data['estado'] = 'C'
+            tipo_consulta_consulta_serializer = TipoConsultaSerializer(data=tipo_coansulta_data)
+            if tipo_consulta_consulta_serializer.is_valid():
+                if HistorialMethods().create(usuario=id, evento="create type query"):
+                    tipo_consulta_consulta_serializer.save()
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
+                else:
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
+            else:
+                return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['PUT'])
+def putTipoConsulta(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            tipo_consulta_data = JSONParser().parse(request)
+            tipo_consulta = TipoConsulta.objects.get(id=tipo_consulta_data['id'])
+
+            tipo_consulta_data_serializer = TipoConsultaSerializer(tipo_consulta, data=tipo_consulta_data)
+            if tipo_consulta_data_serializer.is_valid():
+                if HistorialMethods().create(usuario=id, evento="update"):
+                    tipo_consulta_data_serializer.save()
+                    return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
+                else:
+                    return JsonResponse({"status": False, "message": "Failed to Update"})
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['DELETE'])
+def deleteTipoConsulta(request, id, user):
+    try:
+        if Usuario.objects.get(id=user).estado == 'C':
+            tc = TipoConsulta.objects.get(id=id)
+            tc.estado = 'D'
+            if HistorialMethods().create(usuario=user, evento="remove"):
+                tc.save()
+                return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
+            else:
+                return JsonResponse({"status": False, "message": "Failed to Deleted"}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
         return http.HTTPStatus.NOT_FOUND

@@ -15,6 +15,17 @@ class Servicio(models.Model):
         db_table = 'servicio'
 
 
+class HistoricoServicio(models.Model):
+    id = models.AutoField(primary_key=True)
+    servicio = models.ForeignKey(Servicio, null=False, on_delete=models.CASCADE)
+    tarifa = models.IntegerField(null=False)
+    fecha = models.DateField(null=False)
+    estado = models.CharField(max_length=1, null=False)
+
+    class Meta:
+        db_table = 'HistoricoServicio'
+
+
 class Historico(models.Model):
     id = models.AutoField(primary_key=True)
     consulta = models.ForeignKey(Consulta, null=False, on_delete=models.CASCADE)

@@ -59,7 +59,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="../pages/queryPet.html">
+                <a class="nav-link" href="../pages/queryPet.html">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"
                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -82,7 +82,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#ecommerceExamples" class="nav-link"
+                <a data-bs-toggle="collapse" href="#ecommerceExamples" class="nav-link active"
                    aria-controls="ecommerceExamples" role="button" aria-expanded="false">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center  me-2">
                         <svg class="text-dark" width="12px" height="12px" viewBox="0 0 42 44" version="1.1"
@@ -118,20 +118,10 @@
                     </div>
                     <div class="collapse  show ">
                         <ul class="nav ms-4 ps-3">
-                            <li class="nav-item ">
-                                <a class="nav-link " href="tablesUsers.html">
+                            <li class="nav-item active">
+                                <a class="nav-link active" href="tablesUsers.html">
                                     <span class="sidenav-mini-icon">  U  </span>
                                     <span class="sidenav-normal"> User </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="collapse  show ">
-                        <ul class="nav ms-4 ps-3">
-                            <li class="nav-item ">
-                                <a class="nav-link " href="tablesService.html">
-                                    <span class="sidenav-mini-icon"> S </span>
-                                    <span class="sidenav-normal"> Service </span>
                                 </a>
                             </li>
                         </ul>
@@ -171,16 +161,16 @@
         </ul>
     </div>
 </aside>
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+<main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
          navbar-scroll="true">
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">System</a>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a>
                     </li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Query</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tables</li>
                 </ol>
                 <h4 id="userNameAdmin" class="font-weight-bolder mb-0"></h4>
             </nav>
@@ -203,44 +193,42 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-        <div class="row mt-4">
-            <div class="col-lg-8 mt-lg-0 mt-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="font-weight-bolder">Query Information</h5>
-                        <div class="row">
-                            <div class="col-6 col-sm-6">
-                                <label>Pet weight <strong>(kg)</strong></label>
-                                <input class="form-control" type="number" id="txtPetWeight">
-                            </div>
-                            <div class="col-12 col-sm-6 mt-6 mt-sm-0">
-                                <label>Type query</label>
-                                <select class="form-control" id="txtTypeQuery">
-                                    <option value="Control">Control</option>
-                                </select>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Service: <strong id="txtNumService"></strong></h6>
+
+                        <button class="btn btn-sm btn-neutral" onclick="openAddService()">Add Service</button>
+
+                        <div class="container-fluid col-8">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input class="form-control" id="searchTerm" placeholder="Search"
+                                       onkeyup="doSearch('tableUser','searchTerm')" type="text">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4">Description</label>
-                                <textarea class="form-control" id="txtDescription"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="txtNumerId" class="form-label">number</label>
-                                <input type="number" class="form-control" id="txtNumerId">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="txtType" class="form-label"> Type</label>
-                                <select class="form-control" id="txtType"></select>
-                            </div>
-                        </div>
-                        <div class="card-body ">
-                            <button type="button" class="btn bg-gradient-primary col-md-12" data-bs-toggle="modal"
-                                    onclick="openAdd()">
-                                Register
-                            </button>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="tableService" class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Name
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Rate
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        #
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -252,34 +240,19 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Queries: <strong id="txtNumQuerie"></strong></h6>
-                        <div class="container-fluid col-8">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                <input class="form-control" id="searchTerm" placeholder="Search"
-                                       onkeyup="doSearch('tableQueries','searchTerm')" type="text">
-                            </div>
-                        </div>
+                        <h6>Document type: <strong id="txtNumType"></strong></h6>
+                        <button class="btn btn-sm btn-neutral" onclick="addDocumentType()">Add Document type</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table id="tableQueries" class="table align-items-center mb-0">
+                            <table id="tableDocumentType" class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Pet
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Name
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        User
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Weight
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Type
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Date
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        #
                                     </th>
                                 </tr>
                                 </thead>
@@ -324,12 +297,14 @@
             </div>
         </div>
     </div>
-
 </main>
+
 <!--   Core JS Files   -->
 <script src="../assets/js/manage.js"></script>
 <script src="../assets/js/user/user-admin.js"></script>
-<script src="../assets/js/user/tables/tables-query.js"></script>
+<script src="../assets/js/user/tables/crudService/service.js"></script>
+<script src="../assets/js/user/tables/crudService/typeQuery.js"></script>
+<script src="../assets/js/user/tables/tables-service.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>
 <script src="../assets/js/core/bootstrap.min.js"></script>
 <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>

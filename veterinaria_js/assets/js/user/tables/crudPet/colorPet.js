@@ -66,8 +66,8 @@ function openAddColor() {
             if (userLogin.status) {
                 let res = await queryPT('POST', register_color + id, {'nombre': capitalizar(name)}, false);
                 if (res.status) {
-                    await llenarTablaColores();
                     closeModal();
+                    await llenarTablaColores();
                 } else {
                     alert(res.message);
                 }

@@ -30,4 +30,9 @@ urlpatterns = [
     path('api/consulta/all/<int:id>', views.getConsulta),
     path('api/consulta/all/user/<int:id>', views.getConsultagetUser),
     path('api/consulta/save/<int:id>', views.postConsulta),
+
+    path('api/tipoconsulta/all/<int:id>', views.getTipoConsulta),
+    path('api/tipoconsulta/save/<int:id>', views.postTipoConsulta),
+    path('api/tipoconsulta/update/<int:id>', views.putTipoConsulta),
+    path('api/tipoconsulta/remove/<int:id>/<int:user>', views.deleteTipoConsulta),
 ]

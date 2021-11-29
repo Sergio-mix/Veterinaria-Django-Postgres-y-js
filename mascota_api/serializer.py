@@ -37,3 +37,10 @@ class ConsultaSerializer(serializers.ModelSerializer):
         model = Consulta
         fields = (
             'id', 'mascota', 'peso', 'tipo', 'fecha', 'descripcion', 'estado')
+
+
+class TipoConsultaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consulta
+        fields = (
+            'id', 'nombre', 'estado')

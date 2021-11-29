@@ -145,8 +145,8 @@ function openPetRegister() {
                 let res = await queryPT('POST', save_pet + id, pet, false);
 
                 if (res.status) {
-                    await llenarTabla();
                     closePet();
+                    await llenarTabla();
                 } else {
                     alert(res.message);
                 }

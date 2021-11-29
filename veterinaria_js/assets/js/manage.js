@@ -45,6 +45,12 @@ const register_Query_pet = API + 'api/consulta/save/';
 const all_query = API + 'api/consulta/all/';
 const all_get_query = API + 'api/consulta/all/user/';
 
+const all_service = API + 'api/servicio/all/';
+const getByid_service = API + 'api/servicio/byid/';
+const save_service = API + 'api/servicio/save/';
+const update_service = API + 'api/servicio/update/';
+const remove_service = API + 'api/servicio/remove/';
+
 const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 
