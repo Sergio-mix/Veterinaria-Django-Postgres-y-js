@@ -167,19 +167,22 @@ def getFactura_all(request, id):
                 histico = Historico.objects.filter(factura_id=f.id, estado='C')
                 lista_Historico = []
                 fecha = ''
-                consulta = ''
+                consultaID = 0
                 for h in histico:
                     fecha = h.consulta.fecha
-                    consulta = h.consulta.id
+                    consultaID = h.consulta.id
                     lista_Historico.append(
                         {"servicio": h.servicio.nombre})
 
-                list.append({"status": True, "costo_total": f.costo_total, "forma_pago": f.forma_pago,
-                             "fecha": fecha, "consulta": consulta, "lista": lista_Historico})
+                consulta = Consulta.objects.get(id=consultaID)
+
+                list.append({"costo_total": f.costo_total, "forma_pago": f.forma_pago,
+                             "fecha": fecha, "consulta": consultaID, "usuario": consulta.mascota.usuario.correo,
+                             "mascota": consulta.mascota.nombre,
+                             "lista": lista_Historico})
 
             return JsonResponse(list, safe=False)
         else:
             return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
-        print(error)
         return http.HTTPStatus.NOT_FOUND

@@ -1,6 +1,7 @@
 tipoId();
 tipoQuery();
 llenarQuery();
+llenarInvoice();
 
 async function llenarQuery() {
     const request = await fetch(all_query + id, {
@@ -189,4 +190,34 @@ function registerService(codigo) {
 
 function closeModal() {
     document.getElementById('modal_container').classList.remove('show');
+}
+
+async function llenarInvoice() {
+    const request = await fetch(all_Invoice + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        location.reload();
+    })
+
+    const bills = await request.json();
+
+    let listHtml = '';
+    for (let b of bills) {
+        let fila =
+            "<tr><td> " + b.usuario + "</td>" +
+            "<td> " + b.mascota + "</td>" +
+            "<td> " + b.forma_pago + ' Kg' + "</td>" +
+            "<td> " + b.fecha + "</td>" +
+            "<td> " + b.fecha + "</td>" +
+            "</tr>";
+
+        listHtml += fila;
+    }
+
+    document.querySelector('#tableBills tbody').outerHTML = listHtml;
+    // document.getElementById('txtNumBills').innerText = bills.length;
 }
