@@ -224,6 +224,27 @@ async function tipoQuery() {
     }
 }
 
+async function tipeService() {
+    const request = await fetch(all_service + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        location.reload();
+    });
+
+    const services = await request.json();
+
+    for (let service of services) {
+        document.getElementById('txtService').innerHTML +=
+            "<option value='" + service.id + "'>" + service.nombre + "</option>";
+    }
+
+    return services;
+}
+
 function capitalizar(sr) {
     let s = sr.toLowerCase();
     return s.charAt(0).toUpperCase() + s.slice(1);

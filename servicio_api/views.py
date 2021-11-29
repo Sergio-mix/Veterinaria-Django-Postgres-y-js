@@ -37,7 +37,8 @@ def getServicio(request, id):
             services = Servicio.objects.filter(estado='C')
             list = []
             for service in services:
-                list.append({"id": service.id, "nombre": service.nombre, "tarifa": service.tarifa})
+                list.append({"id": service.id, "nombre": service.nombre, "tarifa": service.tarifa,
+                             "descripcion": service.descripcion})
 
             return JsonResponse(list, safe=False)
         else:
@@ -121,5 +122,30 @@ def getHistorialServicio(request, id):
             return JsonResponse(list, safe=False)
         else:
             return JsonResponse("User not enabled", safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+
+@api_view(['POST'])
+def postServicio_factura(request, id):
+    try:
+        servicio_factura_data = JSONParser().parse(request)
+        if Usuario.objects.get(id=id).estado == 'C':
+
+            servicio_factura_data['estado'] = 'C'
+            service_serializer = ServicioSerializer(data=service_data)
+            if service_serializer.is_valid():
+                if HistorialMethods().create(usuario=id, evento="create service"):
+                    service_serializer.save()
+                    res = Servicio.objects.get(nombre=service_data["nombre"])
+                    b = HistorialServiciosMethods().create(res.id, res.tarifa)
+                    print(b)
+                    return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
+                else:
+                    return JsonResponse({"status": False, "message": "Failed to Save"}, safe=False)
+            return JsonResponse({"status": False, "message": "Failed to Add"}, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
     except Exception as error:
         return http.HTTPStatus.NOT_FOUND

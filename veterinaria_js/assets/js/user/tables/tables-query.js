@@ -73,13 +73,12 @@ async function openAdd() {
             '                    <button class="btn btn-outline-primary btn-sm " onclick="closeModal()">Close</button>\n' +
             '             </div>';
 
-        let validate = await queryPT('POST', user_exists + id, {
+        let user = await queryPT('POST', user_exists + id, {
             "id": numerId,
             "tipo": type
         }, false);
 
-
-        if (!validate.status) {
+        if (!user.status) {
             alert('There are no registered users with this identification');
             return;
         }
@@ -87,7 +86,7 @@ async function openAdd() {
         document.getElementById('titleModal').innerText = 'Pet';
         document.getElementById('modal_container').classList.add('show');
 
-        const request = await fetch(all_pet + id + '/' + validate.id, {
+        const request = await fetch(all_pet + id + '/' + user.id, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -96,6 +95,8 @@ async function openAdd() {
         }).catch(err => {
             location.reload();
         })
+
+        sessionStorage.setItem('idUserPet', user.id);
 
         const pets = await request.json();
 
@@ -114,7 +115,6 @@ async function openAdd() {
 
             listHtml += fila;
         }
-
         document.querySelector('#tablePet tbody').outerHTML = listHtml;
     } else {
         alert('The identification field is required');
@@ -173,23 +173,18 @@ function registerQuery(codigo) {
     }
 }
 
-function registerService(codigo){
+function registerService(codigo) {
+    let weight = document.getElementById('txtPetWeight').value;
+    let type = document.getElementById('txtTypeQuery').value;
+    let description = document.getElementById('txtDescription').value;
+    let numberId = document.getElementById('txtNumerId').value;
 
-    document.getElementById('titleModal').innerText = 'Services';
-
-    document.getElementById('containerModal').innerHTML =
-        '           <div class="row g-3">\n' +
-        '                <div class="col-12">\n' +
-        '                    <div class="form-group label-floating">\n' +
-        '                        <label for="txtPasswordRemove" class="form-label">Current password</label>\n' +
-        '                        <input class="form-control" type="password" id="txtPasswordAuthentication">\n' +
-        '                    </div>\n' +
-        '                </div>\n' +
-        '                <div class="col-12">\n' +
-        '                    <button id="onClickQuery" type="button" class="btn btn-primary">Ok</button>\n' +
-        '                    <button class="btn btn-outline-primary btn-sm " onclick="closeModal()">Close</button>\n' +
-        '                </div>\n' +
-        '            </div>';
+    sessionStorage.setItem('peso', weight);
+    sessionStorage.setItem('numberId', numberId);
+    sessionStorage.setItem('idPet', codigo);
+    sessionStorage.setItem('type', type);
+    sessionStorage.setItem('description', description)
+    doOpen('service.html');
 }
 
 function closeModal() {
