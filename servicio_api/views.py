@@ -187,6 +187,41 @@ def getFactura_all(request, id):
 
 
 @api_view(['GET'])
+def getFactura_byid(request, id):
+    try:
+        if Usuario.objects.get(id=id).estado == 'C':
+            factura = Factura.objects.all()
+            list = []
+            for f in factura:
+                histico = Historico.objects.filter(factura_id=f.id)
+                lista_Historico = []
+                fecha = ''
+                consultaID = 0
+                aux = True
+                for h in histico:
+                    if h.consulta.mascota.usuario.id == id:
+                        fecha = h.consulta.fecha
+                        consultaID = h.consulta.id
+                        lista_Historico.append(
+                            {"servicio": h.servicio.nombre})
+                    else:
+                        aux = False
+                if aux:
+                    consulta = Consulta.objects.get(id=consultaID)
+
+                    list.append({"costo_total": f.costo_total, "forma_pago": f.forma_pago,
+                                 "fecha": fecha, "consulta": consultaID,
+                                 "mascota": consulta.mascota.nombre,
+                                 "lista": lista_Historico})
+
+            return JsonResponse(list, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
 def getFactura_servicios_byid(request, id, user):
     try:
         if Usuario.objects.get(id=user).estado == 'C':

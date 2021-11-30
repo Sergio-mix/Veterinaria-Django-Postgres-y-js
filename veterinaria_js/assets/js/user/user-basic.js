@@ -3,6 +3,7 @@ email = sessionStorage.getItem('email')
 data();
 llenarTabla();
 llenarTablaQuerys();
+llenarTablaBills();
 
 async function data() {
     let user = await queryPT('POST', user_get, {"id": id}, true);
@@ -380,7 +381,6 @@ async function llenarTablaQuerys() {
     })
 
     const query = await request.json();
-    document.getElementById('txtNumQuerie').innerText = query.length;
 
     let listHtml = '';
     for (let q of query) {
@@ -395,4 +395,35 @@ async function llenarTablaQuerys() {
     }
 
     document.querySelector('#tableQueries tbody').outerHTML = listHtml;
+    document.getElementById('txtNumQuerie').innerText = query.length;
+}
+
+async function llenarTablaBills() {
+    const request = await fetch(all_Invoice_byId + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        location.reload();
+    })
+
+    const query = await request.json();
+
+    let listHtml = '';
+    for (let b of query) {
+
+        let fila =
+            "<tr><td> " + b.mascota + "</td>" +
+            "<td> " + b.costo_total + "</td>" +
+            "<td> " + b.forma_pago + "</td>" +
+            "<td> " + b.fecha + "</td>" +
+            "</tr>";
+
+        listHtml += fila;
+    }
+
+    document.querySelector('#tableBills tbody').outerHTML = listHtml;
+    document.getElementById('txtNumBills').innerText = query.length;
 }

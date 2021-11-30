@@ -59,6 +59,7 @@ const update_type = API + 'api/tipoconsulta/update/';
 
 const register_Invoice = API + 'api/factura/save/';
 const all_Invoice = API + 'api/factura/all/';
+const all_Invoice_byId = API + 'api/factura/byid/';
 const all_Invoice_service_byId = API + 'api/factura/servicio/byid/';
 
 const all_record_service_all = API + 'api/historialservicios/all/';
