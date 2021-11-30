@@ -40,8 +40,9 @@ async function pdfPets() {
 function pdf(title, head, body) {
     const fecha = date();
     const doc = new jsPDF();
-    doc.setFontSize(16)
+    doc.setFontSize(18)
     doc.text(95, 10, title)
+    doc.setFontSize(14)
     doc.text(95, 20, fecha)
     doc.autoTable({html: '#my-table'})
 
@@ -50,5 +51,5 @@ function pdf(title, head, body) {
         body: body
     })
 
-    doc.save(title + '_' + fecha + '.pdf')
+    doc.save(title + '_' + fecha + '.pdf');
 }
