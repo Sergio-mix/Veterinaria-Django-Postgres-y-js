@@ -3,6 +3,10 @@ reports();
 async function reports() {
     let f = date();
     document.getElementById('txtDatePets').innerText = f;
+    document.getElementById('txtDateUsers').innerText = f;
+    document.getElementById('txtDataInvoices').innerText = f;
+    document.getElementById('txtDataService').innerText = f;
+    document.getElementById('txtDataRecord_service').innerText = f;
 
     let numUser = await queryGD('GET', numUsers + id, false);
     document.getElementById('txtNumUsers').innerText = numUser;
@@ -23,6 +27,7 @@ function date() {
 }
 
 async function pdfPets() {
+    document.getElementById('load_modal').classList.add('show');
     let pets = await queryGD('GET', all_pet + id, false);
     let list = []
     for (let pet of pets) {
@@ -33,8 +38,82 @@ async function pdfPets() {
 
 
     pdf('Mascotas',
-        ['USER', 'MICROCHIP', 'MICROCHIP', 'COLOUR', 'SPECIES', 'DATE OF BIRTH', 'SEX'],
+        ['USER', 'MICROCHIP', 'PET', 'COLOUR', 'SPECIES', 'DATE OF BIRTH', 'SEX'],
         list);
+    document.getElementById('load_modal').classList.remove('show');
+}
+
+async function pdfUsers() {
+    document.getElementById('load_modal').classList.add('show');
+    let users = await queryGD('GET', user_all + id, false);
+    let list = []
+    for (let user of users) {
+        list.push([user.correo, user.identificacion,
+            user.nombres, user.apellidos, user.telefono,
+            user.telefono_fijo, user.direccion])
+    }
+
+
+    pdf('Usuarios',
+        ['EMAIL', 'ID', 'NAMES', 'LASTNAMES', 'TELEPHONE', 'LANDLINE', 'ADDRESS'],
+        list);
+    document.getElementById('load_modal').classList.remove('show');
+}
+
+async function pdfFacturas() {
+    document.getElementById('load_modal').classList.add('show');
+    let invoices = await queryGD('GET', all_Invoice + id, false);
+    let list = []
+    for (let invoice of invoices) {
+
+        let services = []
+
+        for (let s of invoice.lista) {
+            services.push(s.servicio)
+        }
+
+        list.push([invoice.usuario, invoice.mascota,
+            invoice.costo_total, invoice.forma_pago, invoice.fecha,
+            services])
+    }
+
+
+    pdf('Facturas',
+        ['USER', 'PET', 'COST', 'WAY TO PAY', 'DATE', 'SERVICES'],
+        list);
+    document.getElementById('load_modal').classList.remove('show');
+}
+
+async function pdfServices() {
+    document.getElementById('load_modal').classList.add('show');
+    let services = await queryGD('GET', all_service + id, false);
+    let list = []
+    for (let service of services) {
+        list.push([service.nombre, service.tarifa,
+            service.descripcion])
+    }
+
+
+    pdf('Servicios',
+        ['NAME', 'RATE', 'DESCRIPTION'],
+        list);
+    document.getElementById('load_modal').classList.remove('show');
+}
+
+async function pdfDataRecord_service() {
+    document.getElementById('load_modal').classList.add('show');
+    let services = await queryGD('GET', all_record_service_all + id, false);
+    let list = []
+    for (let service of services) {
+        list.push([service.nombre, service.fecha,
+            service.tarifa])
+    }
+
+
+    pdf('Historial Servicios',
+        ['NAME', 'Date', 'RATE'],
+        list);
+    document.getElementById('load_modal').classList.remove('show');
 }
 
 function pdf(title, head, body) {
@@ -51,5 +130,9 @@ function pdf(title, head, body) {
         body: body
     })
 
-    doc.save(title + '_' + fecha + '.pdf');
+    doc.setProperties({
+        title: title + ' ' + fecha
+    });
+
+    window.open(doc.output('bloburl', {filename: 'myFileName.pdf'}), '_blank');
 }

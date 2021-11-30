@@ -59,6 +59,7 @@ function addDocumentType() {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -66,12 +67,15 @@ function addDocumentType() {
             if (userLogin.status) {
                 let res = await queryPT('POST', save_tipo + id, {'nombre': name}, false);
                 if (res.status) {
-                    await llenarTablaDocumentType();
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
+                    await llenarTablaDocumentType();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -86,8 +90,8 @@ function openRemoveDocumentType(codigo, btn) {
 
     document.getElementById('removeModal').onclick = async function () {
         let password = document.getElementById('txtPasswordRemove').value;
-
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -95,13 +99,16 @@ function openRemoveDocumentType(codigo, btn) {
             if (userLogin.status) {
                 let res = await queryGD('DELETE', remove_tipo + codigo + '/' + id, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -146,6 +153,7 @@ async function updateDocumentType(codigo) {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -157,12 +165,15 @@ async function updateDocumentType(codigo) {
                     "estado": 'C'
                 }, false);
                 if (res.status) {
-                    await llenarTablaDocumentType();
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
+                    await llenarTablaDocumentType();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {

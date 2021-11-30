@@ -69,6 +69,7 @@ function openAddRace() {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -79,12 +80,15 @@ function openAddRace() {
                     "tamanio": size
                 }, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
                     await llenarTablaRazas();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -101,6 +105,7 @@ function openRemoveRace(codigo, btn) {
         let password = document.getElementById('txtPasswordRemove').value;
 
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -108,13 +113,16 @@ function openRemoveRace(codigo, btn) {
             if (userLogin.status) {
                 let res = await queryGD('DELETE', remove_Race + codigo + '/' + id, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -169,6 +177,7 @@ async function updateRace(codigo) {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -181,12 +190,15 @@ async function updateRace(codigo) {
                     "estado": 'C'
                 }, false);
                 if (res.status) {
-                    await llenarTablaRazas();
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
+                    await llenarTablaRazas();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {

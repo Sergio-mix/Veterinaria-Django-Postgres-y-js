@@ -24,6 +24,7 @@ async function llenarQuery() {
             "<td> " + q.peso + ' Kg' + "</td>" +
             "<td> " + q.tipo + "</td>" +
             "<td> " + q.fecha + "</td>" +
+            "<td> " + q.descripcion + "</td>" +
             "</tr>";
 
         listHtml += fila;
@@ -156,6 +157,7 @@ function registerQuery(codigo) {
         '            </div>';
 
     document.getElementById('onClickQuery').onclick = async function () {
+        document.getElementById('load_modal').classList.add('show');
         let userLogin = await user_login({
             "correo": email,
             "clave": document.getElementById('txtPasswordAuthentication').value
@@ -163,12 +165,15 @@ function registerQuery(codigo) {
         if (userLogin.status) {
             let res = await queryPT('POST', register_Query_pet + id, query, false);
             if (res.status) {
+                document.getElementById('load_modal').classList.remove('show');
                 closeModal();
                 await llenarQuery();
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(res.message);
             }
         } else {
+            document.getElementById('load_modal').classList.remove('show');
             alert(userLogin.message);
         }
     }

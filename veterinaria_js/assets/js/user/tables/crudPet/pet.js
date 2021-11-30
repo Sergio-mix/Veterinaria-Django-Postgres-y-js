@@ -65,6 +65,7 @@ function openRemovePets(codigo, btn) {
         let password = document.getElementById('txtPasswordRemove').value;
 
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -72,13 +73,16 @@ function openRemovePets(codigo, btn) {
             if (userLogin.status) {
                 let res = await queryGD('DELETE', remove__pet + codigo + '/' + id, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -162,6 +166,7 @@ function openAddPet() {
         let passwordPet = document.getElementById('txtPasswordPet').value;
 
         if (name !== "" && birth_date !== "" && passwordPet !== "" && numberId !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": document.getElementById('txtPasswordPet').value
@@ -186,15 +191,19 @@ function openAddPet() {
 
                     let res = await queryPT('POST', save_pet + id, pet, false);
                     if (res.status) {
+                        document.getElementById('load_modal').classList.remove('show');
                         closeModal();
                         await llenarPets();
                     } else {
+                        document.getElementById('load_modal').classList.remove('show');
                         alert(res.message);
                     }
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(validate.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -278,6 +287,7 @@ async function updatePet(codigo) {
         let passwordPet = document.getElementById('txtPasswordPet').value;
 
         if (name !== "" && birth_date !== "" && passwordPet !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": document.getElementById('txtPasswordPet').value
@@ -303,12 +313,15 @@ async function updatePet(codigo) {
 
                 let request = await queryPT('PUT', update__pet + id, pet, false);
                 if (request.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
                     await llenarPets();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(request.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {

@@ -27,3 +27,4 @@ async function llenarTablaRecord() {
     document.querySelector('#tableRecord tbody').outerHTML = listHtml;
     document.getElementById('txtRecord').innerText = records.length;
 }
+

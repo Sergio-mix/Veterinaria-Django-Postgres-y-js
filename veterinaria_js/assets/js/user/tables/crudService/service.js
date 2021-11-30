@@ -14,9 +14,17 @@ async function llenarTablaService() {
 
     let listHtml = '';
     for (let service of services) {
+
+        let descripcion = service.descripcion;
+
+        if (descripcion === null) {
+            descripcion = '';
+        }
+
         let fila =
             "<tr><td> " + service.nombre + "</td>" +
             "<td> " + service.tarifa + "</td>" +
+            "<td> " + descripcion + "</td>" +
             "<td>" +
             "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" " +
             "onclick='updateService(" + service.id + ")'>Update</button>" +
@@ -70,6 +78,7 @@ function openAddService() {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "" && rate !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -86,12 +95,15 @@ function openAddService() {
                     "descripcion": description
                 }, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
                     await llenarTablaService();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -108,6 +120,7 @@ function openRemoveService(codigo, btn) {
         let password = document.getElementById('txtPasswordRemove').value;
 
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -118,10 +131,13 @@ function openRemoveService(codigo, btn) {
                     closeRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
+                    document.getElementById('load_modal').classList.remove('show');
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -178,6 +194,7 @@ async function updateService(codigo) {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -195,12 +212,15 @@ async function updateService(codigo) {
                     "estado": 'C'
                 }, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
                     await llenarTablaService();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {

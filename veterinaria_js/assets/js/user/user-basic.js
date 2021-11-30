@@ -73,6 +73,7 @@ async function updateUser() {
     let password = document.getElementById('txtPassword').value;
 
     if (names !== "" && lasName !== "" && telephone !== "" && address !== "" && password !== "") {
+        document.getElementById('load_modal').classList.add('show');
         let userData = await queryPT('POST', user_get, {"id": id}, false);
         if (userData.status) {
             let userLogin = await user_login({
@@ -107,15 +108,19 @@ async function updateUser() {
                 let userUpdate = await queryPT('PUT', update_user + id, user, false);
 
                 if (userUpdate.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeUse();
                     await data();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(userUpdate.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
+            document.getElementById('load_modal').classList.remove('show');
             alert(userData.message);
             location.reload();
         }
@@ -137,6 +142,7 @@ function openPetRegister() {
         let pet = petForm();
 
         if (pet !== null) {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": document.getElementById('txtPasswordPet').value
@@ -145,12 +151,15 @@ function openPetRegister() {
                 let res = await queryPT('POST', save_pet + id, pet, false);
 
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closePet();
                     await llenarTabla();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         }
@@ -229,7 +238,7 @@ async function openPetUpdate(codigo) {
         let pet = petForm();
 
         if (pet !== null) {
-
+            document.getElementById('load_modal').classList.add('show');
             const petObj = {
                 "id": codigo,
                 "estado": 'C',
@@ -250,12 +259,15 @@ async function openPetUpdate(codigo) {
             if (userLogin.status) {
                 let res = await queryPT('PUT', update__pet + id, petObj, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closePet();
                     await llenarTabla();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         }
@@ -269,6 +281,7 @@ function openPetRemove(codigo, btn) {
         let password = document.getElementById('txtPasswordPetRemove').value;
 
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -277,13 +290,16 @@ function openPetRemove(codigo, btn) {
                 let res = await queryGD('DELETE', remove__pet + codigo + '/' + id, false);
 
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closePetRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {

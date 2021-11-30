@@ -133,6 +133,7 @@ function addUser() {
         if (names !== "" && LastNames !== "" && emailUser !== "" && passwordUser !== ""
             && identification !== "" && telephone !== "" && address !== ""
             && passwordModal !== "" && emailRegex.test(emailUser)) {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": passwordModal
@@ -158,15 +159,19 @@ function addUser() {
                         "direccion": address
                     }, false);
                     if (res.status) {
-                        await llenarUsers();
+                        document.getElementById('load_modal').classList.remove('show');
                         closeModal();
+                        await llenarUsers();
                     } else {
+                        document.getElementById('load_modal').classList.remove('show');
                         alert(res.message);
                     }
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(valEmail.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -183,6 +188,7 @@ function openRemoveUser(codigo, btn) {
         let password = document.getElementById('txtPasswordRemove').value;
 
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -190,13 +196,16 @@ function openRemoveUser(codigo, btn) {
             if (userLogin.status) {
                 let res = await queryGD('DELETE', remove_user + codigo + '/' + id, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -343,6 +352,7 @@ function openRemoveUser(codigo, btn) {
 async function record(codigo) {
     document.getElementById('titleModal').innerText = 'Record User'
     document.getElementById('modal_container').classList.add('show');
+    document.getElementById('load_modal').classList.add('show');
 
     document.getElementById('containerModal').innerHTML =
         '  <div class="container-fluid py-4 modal-dialog-scrollable navbar-nav-scroll">\n' +
@@ -403,4 +413,5 @@ async function record(codigo) {
 
     document.querySelector('#tableRecord tbody').outerHTML = listHtml;
     document.getElementById('txtRecord').innerText = records.length;
+    document.getElementById('load_modal').classList.remove('show');
 }

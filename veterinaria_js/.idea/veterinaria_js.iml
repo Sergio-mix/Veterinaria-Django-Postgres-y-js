@@ -11,5 +11,6 @@
     <orderEntry type="library" name="jspdf" level="application" />
     <orderEntry type="library" name="jspdf-autotable" level="application" />
     <orderEntry type="library" name="42d5adcbca" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

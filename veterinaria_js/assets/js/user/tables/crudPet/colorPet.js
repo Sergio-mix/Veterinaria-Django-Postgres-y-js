@@ -59,6 +59,7 @@ function openAddColor() {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -66,12 +67,15 @@ function openAddColor() {
             if (userLogin.status) {
                 let res = await queryPT('POST', register_color + id, {'nombre': capitalizar(name)}, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
                     await llenarTablaColores();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -88,6 +92,7 @@ function openRemoveColor(codigo, btn) {
         let password = document.getElementById('txtPasswordRemove').value;
 
         if (password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -95,13 +100,16 @@ function openRemoveColor(codigo, btn) {
             if (userLogin.status) {
                 let res = await queryGD('DELETE', remove_color + codigo + '/' + id, false);
                 if (res.status) {
+                    document.getElementById('load_modal').classList.remove('show');
                     closeRemove();
                     let row = btn.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {
@@ -146,6 +154,7 @@ async function updateColor(codigo) {
         let password = document.getElementById('txtPasswordModal').value;
 
         if (name !== "" && password !== "") {
+            document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
                 "clave": password
@@ -157,12 +166,15 @@ async function updateColor(codigo) {
                     "estado": 'C'
                 }, false);
                 if (res.status) {
-                    await llenarTablaColores();
+                    document.getElementById('load_modal').classList.remove('show');
                     closeModal();
+                    await llenarTablaColores();
                 } else {
+                    document.getElementById('load_modal').classList.remove('show');
                     alert(res.message);
                 }
             } else {
+                document.getElementById('load_modal').classList.remove('show');
                 alert(userLogin.message);
             }
         } else {

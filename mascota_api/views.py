@@ -399,7 +399,7 @@ def getConsulta(request, id):
             for query in consulta:
                 list.append(
                     {"mascota": query.mascota.nombre, "usuario": query.mascota.usuario.correo, "peso": query.peso,
-                     "tipo": query.tipo.nombre, "fecha": query.fecha})
+                     "tipo": query.tipo.nombre, "fecha": query.fecha,"descripcion":query.descripcion})
 
             return JsonResponse(list, safe=False)
         else:

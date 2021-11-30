@@ -94,6 +94,7 @@ async function registerInvoice() {
     let idPet = sessionStorage.getItem('idPet');
 
     if (listService.length !== 0) {
+        document.getElementById('load_modal').classList.add('show');
 
         if (description === "") {
             description = null;
@@ -119,15 +120,16 @@ async function registerInvoice() {
         let res = await queryPT('POST', register_Invoice + id, query, false);
 
         if (res.status) {
+            document.getElementById('load_modal').classList.remove('show');
             alert(res.message);
             doOpen('queryPet.html');
         } else {
-            res.message;
+            document.getElementById('load_modal').classList.remove('show');
+            alert(res.message);
         }
     } else {
         alert('There are no associated services');
     }
-
 }
 
 
