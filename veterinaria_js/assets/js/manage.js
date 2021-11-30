@@ -62,6 +62,10 @@ const all_Invoice = API + 'api/factura/all/';
 
 const all_record_service_all = API + 'api/historialservicios/all/';
 
+const numUsers = API + 'api/reporte/usuarios/';
+const numPets = API + 'api/reporte/mascotas/';
+const numServices = API + 'api/reporte/servicios/';
+const numComplete = API + 'api/reporte/facturas/';
 
 const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 

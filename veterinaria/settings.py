@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'servicio_api.apps.ServicioApiConfig',
     'usuario_api.apps.UsuarioApiConfig',
     'mascota_api.apps.MascotaApiConfig',
-
+    'reportes_api.apps.ReportesApiConfig'
 ]
 
 MIDDLEWARE = [

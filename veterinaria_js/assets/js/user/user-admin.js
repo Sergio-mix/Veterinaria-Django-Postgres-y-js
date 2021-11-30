@@ -10,5 +10,4 @@ async function data() {
         alert(user.message);
         doOpen('sign-in.html');
     }
-
 }

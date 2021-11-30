@@ -1,5 +1,4 @@
 import http
-import json
 from datetime import datetime
 
 from rest_framework.decorators import api_view
@@ -7,7 +6,6 @@ from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 
 from mascota_api.models import Consulta
-from mascota_api.serializer import ConsultaSerializer
 from servicio_api.methods import HistorialServiciosMethods
 from servicio_api.models import HistoricoServicio, Factura, Historico
 from servicio_api.serializer import ServicioSerializer
