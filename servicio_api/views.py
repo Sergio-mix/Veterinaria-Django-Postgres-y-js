@@ -114,7 +114,7 @@ def deleteService(request, id, user):
 def getHistorialServicio(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
-            historial = HistoricoServicio.objects.filter(estado='C')
+            historial = HistoricoServicio.objects.all()
             list = []
             for h in historial:
                 list.append({"id": h.id, "nombre": h.servicio.nombre, "fecha": h.fecha, "tarifa": h.tarifa})
@@ -159,10 +159,10 @@ def postServicio_factura(request, id):
 def getFactura_all(request, id):
     try:
         if Usuario.objects.get(id=id).estado == 'C':
-            factura = Factura.objects.filter(estado='C')
+            factura = Factura.objects.all()
             list = []
             for f in factura:
-                histico = Historico.objects.filter(factura_id=f.id, estado='C')
+                histico = Historico.objects.filter(factura_id=f.id)
                 lista_Historico = []
                 fecha = ''
                 consultaID = 0
@@ -178,6 +178,23 @@ def getFactura_all(request, id):
                              "fecha": fecha, "consulta": consultaID, "usuario": consulta.mascota.usuario.correo,
                              "mascota": consulta.mascota.nombre,
                              "lista": lista_Historico})
+
+            return JsonResponse(list, safe=False)
+        else:
+            return JsonResponse({"status": False, "message": "User not enabled"}, safe=False)
+    except Exception as error:
+        return http.HTTPStatus.NOT_FOUND
+
+
+@api_view(['GET'])
+def getFactura_servicios_byid(request, id, user):
+    try:
+        if Usuario.objects.get(id=user).estado == 'C':
+            historico = Historico.objects.filter(consulta__mascota__usuario_id=id)
+            list = []
+            for h in historico:
+                list.append({"fecha": h.consulta.fecha, "nombre": h.servicio.nombre, "tarifa": h.servicio.tarifa,
+                             "mascota": h.consulta.mascota.nombre})
 
             return JsonResponse(list, safe=False)
         else:

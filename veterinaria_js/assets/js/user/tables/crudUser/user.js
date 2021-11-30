@@ -43,6 +43,8 @@ async function llenarUsers() {
             removeUs +
             "<button style=\"color: rgb(0,167,255)\" class=\"btn btn-sm btn-neutral\" " +
             "onclick='record(" + user.id + ")'>Record</button>" +
+            "<button style=\"color: rgb(227,142,11)\" class=\"btn btn-sm btn-neutral\" " +
+            "onclick='bills_service(" + user.id + ")'>Services</button>" +
             "</td></tr>";
 
         listHtml += fila;
@@ -86,22 +88,31 @@ function addUser() {
         '                        <select class="form-control" id="txtType"></select>\n' +
         '                    </div>\n' +
         '                </div>' +
-        '                <div class="col-12">\n' +
+        '                <div class="col-6">\n' +
         '                    <div class="form-group label-floating">\n' +
         '                        <label for="txtTelephone" class="form-label">Telephone</label>\n' +
         '                        <input class="form-control" type="number" id="txtTelephone">\n' +
         '                    </div>\n' +
         '                </div>' +
-        '                <div class="col-12">\n' +
+        '                <div class="col-6">\n' +
         '                    <div class="form-group label-floating">\n' +
         '                        <label for="txtLandline" class="form-label">landline</label>\n' +
         '                        <input class="form-control" type="number" id="txtLandline">\n' +
         '                    </div>\n' +
         '                </div>' +
-        '                <div class="col-12">\n' +
+        '                <div class="col-6">\n' +
         '                    <div class="form-group label-floating">\n' +
         '                        <label for="txtLandlinetxtAddress" class="form-label">Address</label>\n' +
         '                        <input class="form-control" type="text" id="txtAddress">\n' +
+        '                    </div>\n' +
+        '                  </div>' +
+        '                <div class="col-6">\n' +
+        '                    <div class="form-group label-floating">\n' +
+        '                        <label for="txtLandlinetxtAddress" class="form-label">Role</label>\n' +
+        '                        <select class="form-control" id="txtRole">' +
+        '                            <option value="3">Basic</option>' +
+        '                            <option value="2">Admin</option>' +
+        '                        </select>\n' +
         '                    </div>\n' +
         '                  </div>' +
         '                    <div class="col-12">\n' +
@@ -127,12 +138,13 @@ function addUser() {
         let type = document.getElementById('txtType').value;
         let telephone = document.getElementById('txtTelephone').value;
         let landline = document.getElementById('txtLandline').value;
+        let role = document.getElementById('txtRole').value;
         let address = document.getElementById('txtAddress').value;
         let passwordModal = document.getElementById('txtPasswordModal').value;
 
         if (names !== "" && LastNames !== "" && emailUser !== "" && passwordUser !== ""
             && identification !== "" && telephone !== "" && address !== ""
-            && passwordModal !== "" && emailRegex.test(emailUser)) {
+            && passwordModal !== "" && emailRegex.test(emailUser) && passwordUser.length >= 8) {
             document.getElementById('load_modal').classList.add('show');
             let userLogin = await user_login({
                 "correo": email,
@@ -154,6 +166,7 @@ function addUser() {
                         "tipo": type,
                         "nombres": names,
                         "apellidos": LastNames,
+                        "rol": role,
                         "telefono": telephone,
                         "telefono_fijo": landline,
                         "direccion": address
@@ -413,5 +426,80 @@ async function record(codigo) {
 
     document.querySelector('#tableRecord tbody').outerHTML = listHtml;
     document.getElementById('txtRecord').innerText = records.length;
+    document.getElementById('load_modal').classList.remove('show');
+}
+
+async function bills_service(codigo) {
+    document.getElementById('titleModal').innerText = 'Billed services'
+    document.getElementById('modal_container').classList.add('show');
+    document.getElementById('load_modal').classList.add('show');
+
+    document.getElementById('containerModal').innerHTML =
+        '  <div class="container-fluid py-4 modal-dialog-scrollable navbar-nav-scroll">\n' +
+        '        <div class="row">\n' +
+        '            <div class="col-12">\n' +
+        '                <div class="card mb-4">\n' +
+        '                    <div class="card-header pb-0">\n' +
+        '                    </div>\n' +
+        '                    <div class="card-body px-0 pt-0 pb-2">\n' +
+        '                    <h6 id="txtServices"></h6>\n' +
+        '                        <div class="table-responsive p-0">\n' +
+        '                            <table id="tableServices" class="table align-items-center mb-0 ">\n' +
+        '                                <thead>\n' +
+        '                                <tr>\n' +
+        '                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">\n' +
+        '                                        PET\n' +
+        '                                    </th>\n' +
+        '                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">\n' +
+        '                                        NAME\n' +
+        '                                    </th>\n' +
+        '                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">\n' +
+        '                                        COST\n' +
+        '                                    </th>\n' +
+        '                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">\n' +
+        '                                       DATE\n' +
+        '                                    </th>\n' +
+        '                                </tr>\n' +
+        '                                </thead>\n' +
+        '                                <tbody>\n' +
+        '                                </tbody>\n' +
+        '                            </table>\n' +
+        '                        </div>\n' +
+        '                    </h2>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '        </div>\n' +
+        '    </div>' +
+        '</div>' +
+        '            <div class="col-12">\n' +
+        '                    <button class="btn btn-outline-primary btn-sm " onclick="closeModal()">Close</button>\n' +
+        '             </div>';
+
+    const request = await fetch(all_Invoice_service_byId + codigo + '/' + id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).catch(err => {
+        location.reload();
+    })
+
+    const services = await request.json();
+
+    let listHtml = '';
+    for (let service of services) {
+        let fila =
+            "<tr><td> " + service.mascota + "</td>" +
+            "<td> " + service.nombre + "</td>" +
+            "<td> " + service.tarifa + "</td>" +
+            "<td> " + service.fecha + "</td>" +
+            "</tr>";
+
+        listHtml += fila;
+    }
+
+    document.querySelector('#tableServices tbody').outerHTML = listHtml;
+    document.getElementById('txtServices').innerText = services.length;
     document.getElementById('load_modal').classList.remove('show');
 }

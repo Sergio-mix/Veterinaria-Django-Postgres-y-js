@@ -46,8 +46,6 @@ async function llenarPets() {
             "<button style=\"color: #dc4d5c\" class=\"btn btn-sm btn-neutral\" " +
             "onclick='openRemovePets(" + pet.id + ",this" + ")'>" +
             "Remove</button>" +
-            "<button style=\"color: rgba(0,255,82,0.61)\" class=\"btn btn-sm btn-neutral\" " +
-            "onclick='openPetUpdate(" + pet.id + ")'>Queries</button>" +
             "</td></tr>";
 
         listHtml += fila;
