@@ -13,7 +13,7 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from rest_framework import authentication
+# from rest_framework import authentication
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
