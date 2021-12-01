@@ -70,8 +70,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates'
-        ,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

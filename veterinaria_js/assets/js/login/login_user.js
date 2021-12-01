@@ -4,6 +4,7 @@ async function loginUser() {
     let email = document.getElementById('txtEmail').value;
     let password = document.getElementById('txtPassword').value;
     if (email !== "" && password !== "") {
+        document.getElementById('load_modal').classList.add('show');
         const user = {
             "correo": email,
             "clave": password

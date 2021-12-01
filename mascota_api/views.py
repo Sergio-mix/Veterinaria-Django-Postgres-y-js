@@ -48,7 +48,7 @@ def postRaza(request, id):
             raza_data['estado'] = 'C'
             raza_serializer = RazaSerializer(data=raza_data)
             if raza_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create Race"):
                     raza_serializer.save()
                     return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
@@ -69,7 +69,7 @@ def putRaza(request, id):
 
             raza_data_serializer = RazaSerializer(raza, data=raza_data)
             if raza_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update Race"):
                     raza_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -86,7 +86,7 @@ def deleteRaza(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             rz = Raza.objects.get(id=id)
             rz.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove Race"):
                 rz.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
@@ -144,7 +144,7 @@ def postColor(request, id):
             color_data['estado'] = 'C'
             color_serializer = ColorSerializer(data=color_data)
             if color_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create Color"):
                     color_serializer.save()
                     return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
@@ -166,7 +166,7 @@ def putColor(request, id):
 
             color_data_serializer = ColorSerializer(color, data=color_data)
             if color_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update Color"):
                     color_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -183,7 +183,7 @@ def deleteColor(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             cl = Color.objects.get(id=id)
             cl.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove Color"):
                 cl.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
@@ -228,7 +228,7 @@ def postEspecie(request, id):
             especie_data['estado'] = 'C'
             especie_serializer = EspecieSerializer(data=especie_data)
             if especie_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create specie"):
                     especie_serializer.save()
                     return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
@@ -248,7 +248,7 @@ def putEspecie(request, id):
 
             especie_data_serializer = ColorSerializer(especie, data=especie_data)
             if especie_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update specie"):
                     especie_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -265,7 +265,7 @@ def deleteEspecie(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             ep = Especie.objects.get(id=id)
             ep.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove specie"):
                 ep.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
@@ -341,7 +341,7 @@ def postMascota(request, id):
             mascota_data['estado'] = 'C'
             mascota_serializer = MascotaSerializer(data=mascota_data)
             if mascota_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="create"):
+                if HistorialMethods().create(usuario=id, evento="create pet"):
                     mascota_serializer.save()
                     return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
@@ -362,7 +362,7 @@ def putMascota(request, id):
 
             mascota_data_serializer = MascotaSerializer(mascota, data=mascota_data)
             if mascota_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update pet"):
                     mascota_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -379,7 +379,7 @@ def deleteMacota(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             mc = Mascota.objects.get(id=id)
             mc.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove pet"):
                 mc.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
@@ -510,7 +510,7 @@ def putTipoConsulta(request, id):
 
             tipo_consulta_data_serializer = TipoConsultaSerializer(tipo_consulta, data=tipo_consulta_data)
             if tipo_consulta_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update type query"):
                     tipo_consulta_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -527,7 +527,7 @@ def deleteTipoConsulta(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             tc = TipoConsulta.objects.get(id=id)
             tc.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove type query"):
                 tc.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:

@@ -1,7 +1,6 @@
 tipoId();
 document.getElementById('txtEmail').value = sessionStorage.getItem('email');
 
-
 async function register() {
     let nombres = document.getElementById('txtName').value;
     let apellidos = document.getElementById('txtLastname').value;
@@ -16,6 +15,7 @@ async function register() {
     }
 
     if (nombres !== "" && apellidos !== "" && identificacion !== "" && telefono !== "" && tipo !== null) {
+        document.getElementById('load_modal').classList.add('show');
         const user = {
             "correo": sessionStorage.getItem('email'),
             "clave": sessionStorage.getItem('password'),
@@ -35,6 +35,7 @@ async function register() {
             alert(res.message);
             doOpen('sign-in.html');
         } else {
+            document.getElementById('load_modal').classList.remove('show');
             alert(res.message);
         }
     } else {

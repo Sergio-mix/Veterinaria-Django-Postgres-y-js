@@ -135,7 +135,7 @@ def putUser(request, id):
 
             usuario_data_serializer = UsuarioSerializer(usuario, data=usuario_data)
             if usuario_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update user"):
                     usuario_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -154,7 +154,7 @@ def deleteUser(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             us = Usuario.objects.get(id=id)
             us.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove user"):
                 us.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
@@ -196,7 +196,7 @@ def postTipoIdentificacion(request, id):
             tipo_data['estado'] = 'C'
             tipo_serializer = TipoIdentificacionSerializer(data=tipo_data)
             if tipo_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="save"):
+                if HistorialMethods().create(usuario=id, evento="save type id"):
                     tipo_serializer.save()
                     return JsonResponse({"status": True, "message": "Added Successfully"}, safe=False)
                 else:
@@ -216,7 +216,7 @@ def putTipoIdentificacion(request, id):
             tipo = TipoIdentificacion.objects.get(id=tipo_data['id'])
             tipo_data_serializer = TipoIdentificacionSerializer(tipo, data=tipo_data)
             if tipo_data_serializer.is_valid():
-                if HistorialMethods().create(usuario=id, evento="update"):
+                if HistorialMethods().create(usuario=id, evento="update type id"):
                     tipo_data_serializer.save()
                     return JsonResponse({"status": True, "message": "Updated Successfully"}, safe=False)
                 else:
@@ -233,7 +233,7 @@ def deleteTipoIdentificacion(request, id, user):
         if Usuario.objects.get(id=user).estado == 'C':
             ti = TipoIdentificacion.objects.get(id=id)
             ti.estado = 'D'
-            if HistorialMethods().create(usuario=user, evento="remove"):
+            if HistorialMethods().create(usuario=user, evento="remove type id"):
                 ti.save()
                 return JsonResponse({"status": True, "message": "Deleted Successfully"}, safe=False)
             else:
