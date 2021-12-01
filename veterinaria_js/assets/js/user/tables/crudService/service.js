@@ -24,6 +24,7 @@ async function llenarTablaService() {
         let fila =
             "<tr><td> " + service.nombre + "</td>" +
             "<td> " + service.tarifa + "</td>" +
+            "<td> " + service.iva + "</td>" +
             "<td> " + descripcion + "</td>" +
             "<td>" +
             "<button style=\"color: #ffd025\" class=\"btn btn-sm btn-neutral\" " +
@@ -50,9 +51,16 @@ function openAddService() {
         '                        <label for="txtName" class="form-label">Name</label>\n' +
         '                        <input id="txtName" type="text" class="form-control">\n' +
         '                    </div>\n' +
-        '                    <div class="col-md-12">\n' +
+        '                    <div class="col-md-6">\n' +
         '                        <label for="txtRate" class="form-label">Rate</label>\n' +
         '                        <input id="txtRate" type="number" class="form-control">\n' +
+        '                    </div>\n' +
+        '                    <div class="col-md-6">\n' +
+        '                        <label for="txtIva" class="form-label">IVA</label>\n' +
+        '                        <select id="txtIva" type="number" class="form-control">' +
+        '                            <option value="S">True</option>' +
+        '                            <option value="N">False</option>' +
+        '                        </select>\n' +
         '                    </div>\n' +
         '                    <div class="col-md-12">\n' +
         '                        <label for="txtDescription" class="form-label">Description</label>\n' +
@@ -74,6 +82,7 @@ function openAddService() {
     document.getElementById('onClickService').onclick = async function () {
         let name = document.getElementById('txtName').value;
         let rate = document.getElementById('txtRate').value;
+        let iva = document.getElementById('txtIva').value;
         let description = document.getElementById('txtDescription').value;
         let password = document.getElementById('txtPasswordModal').value;
 
@@ -89,9 +98,12 @@ function openAddService() {
                     description = null;
                 }
 
+                iva = iva === 'S';
+
                 let res = await queryPT('POST', save_service + id, {
                     'nombre': capitalizar(name),
                     "tarifa": rate,
+                    "iva": iva,
                     "descripcion": description
                 }, false);
                 if (res.status) {
@@ -156,9 +168,16 @@ async function updateService(codigo) {
         '                        <label for="txtName" class="form-label">Name</label>\n' +
         '                        <input id="txtName" type="text" class="form-control">\n' +
         '                    </div>\n' +
-        '                    <div class="col-md-12">\n' +
+        '                    <div class="col-md-6">\n' +
         '                        <label for="txtRate" class="form-label">Rate</label>\n' +
         '                        <input id="txtRate" type="number" class="form-control">\n' +
+        '                    </div>\n' +
+        '                    <div class="col-md-6">\n' +
+        '                        <label for="txtIva" class="form-label">IVA</label>\n' +
+        '                        <select id="txtIva" type="number" class="form-control">' +
+        '                            <option value="S">True</option>' +
+        '                            <option value="N">False</option>' +
+        '                        </select>\n' +
         '                    </div>\n' +
         '                    <div class="col-md-12">\n' +
         '                        <label for="txtDescription" class="form-label">Description</label>\n' +
@@ -182,6 +201,13 @@ async function updateService(codigo) {
         document.getElementById('txtName').value = res.nombre;
         document.getElementById('txtRate').value = res.tarifa;
         document.getElementById('txtDescription').value = res.descripcion;
+
+        if (res.iva === true) {
+            document.getElementById('txtIva').value = 'S';
+        } else {
+            document.getElementById('txtIva').value = 'N';
+        }
+
     } else {
         alert(res.message);
         location.reload();
@@ -190,6 +216,7 @@ async function updateService(codigo) {
     document.getElementById('onClickService').onclick = async function () {
         let name = document.getElementById('txtName').value;
         let rate = document.getElementById('txtRate').value;
+        let iva = document.getElementById('txtIva').value;
         let description = document.getElementById('txtDescription').value;
         let password = document.getElementById('txtPasswordModal').value;
 
@@ -208,6 +235,7 @@ async function updateService(codigo) {
                     "id": codigo,
                     'nombre': capitalizar(name),
                     "tarifa": rate,
+                    "iva": iva,
                     "descripcion": description,
                     "estado": 'C'
                 }, false);

@@ -5,7 +5,7 @@ async function register() {
     let password = document.getElementById('txtPassword').value;
 
 
-    if (email !== "" && password !== "" && emailRegex.test(email)) {
+    if (email !== "" && password !== "" && emailRegex.test(email) && password.length >= 8) {
         let valEmail = await queryPT('POST', validate_Email, {"email": email}, false);
         if (!valEmail.status) {
             sessionStorage.setItem('email', email)

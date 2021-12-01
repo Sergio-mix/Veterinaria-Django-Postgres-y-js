@@ -39,6 +39,7 @@ async function openAdd() {
     let type = document.getElementById('txtType').value;
 
     if (numerId !== "") {
+        document.getElementById('load_modal').classList.add('show');
         document.getElementById('containerModal').innerHTML =
             '  <div class="container-fluid py-4 modal-dialog-scrollable navbar-nav-scroll">\n' +
             '        <div class="row">\n' +
@@ -81,6 +82,7 @@ async function openAdd() {
         }, false);
 
         if (!user.status) {
+            document.getElementById('load_modal').classList.remove('show');
             alert('There are no registered users with this identification');
             return;
         }
@@ -118,6 +120,7 @@ async function openAdd() {
             listHtml += fila;
         }
         document.querySelector('#tablePet tbody').outerHTML = listHtml;
+        document.getElementById('load_modal').classList.remove('show');
     } else {
         alert('The identification field is required');
     }

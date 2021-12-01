@@ -33,7 +33,7 @@ class Usuario(models.Model):
     tipo = models.ForeignKey(TipoIdentificacion, null=False, on_delete=models.CASCADE)
     nombres = models.CharField(max_length=250, null=False)
     apellidos = models.CharField(max_length=250, null=False)
-    telefono = models.CharField(max_length=20, null=False, unique=True)
+    telefono = models.CharField(max_length=20, null=False)
     telefono_fijo = models.CharField(max_length=30, null=True)
     direccion = models.CharField(max_length=250, null=False)
     estado = models.CharField(max_length=1, null=False)
