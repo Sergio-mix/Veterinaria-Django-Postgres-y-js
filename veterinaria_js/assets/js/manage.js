@@ -1,4 +1,4 @@
-const API = 'http://150.136.122.222:8000/';
+const API = 'http://127.0.0.1:8000/';
 
 const validate_Email = API + 'api/usuario/email';
 const login = API + 'api/usuario/login';
