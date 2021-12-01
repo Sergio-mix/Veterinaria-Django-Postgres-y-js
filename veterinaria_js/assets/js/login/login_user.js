@@ -25,6 +25,7 @@ async function loginUser() {
                     break;
             }
         } else {
+            document.getElementById('load_modal').classList.remove('show');
             alert(res.message);
         }
     } else {
