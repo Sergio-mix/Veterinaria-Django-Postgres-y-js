@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-pj6qdn&#(_olwfp^qhpogw(bi&t8usj7cu%urrq3zf+x!ot@u^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '150.136.122.222']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -97,7 +97,7 @@ DATABASES = {
         'NAME': 'ubosquedb',
         'USER': 'postgres',
         'PASSWORD': 'elperri2021',
-        'HOST': '150.136.122.222',
+        'HOST': '129.158.59.187',
         'PORT': '5432'
     }
 }
